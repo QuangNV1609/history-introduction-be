@@ -30,10 +30,12 @@ public class Article {
     private Integer typeLink;
 
     @Column(name = "createBy")
+    @ManyToOne
     @CreatedBy
     private User createBy;
 
     @Column(name = "lastModifiedBy")
+    @ManyToOne
     @LastModifiedBy
     private User lastModifiedBy;
 
