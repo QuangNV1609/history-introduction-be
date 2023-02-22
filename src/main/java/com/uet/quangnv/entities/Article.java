@@ -29,12 +29,12 @@ public class Article {
     @Column
     private Integer typeLink;
 
-    @Column(name = "createBy")
+    @JoinColumn(name = "createBy")
     @ManyToOne
     @CreatedBy
     private User createBy;
 
-    @Column(name = "lastModifiedBy")
+    @JoinColumn(name = "lastModifiedBy")
     @ManyToOne
     @LastModifiedBy
     private User lastModifiedBy;
