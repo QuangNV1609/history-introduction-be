@@ -9,3 +9,7 @@ spring:
 #Port
 server:
   port: 8080
+
+mail:
+  username: nguyenvanquang16092001@gmail.com
+  password: 29072001

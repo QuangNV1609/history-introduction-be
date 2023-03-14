@@ -34,4 +34,14 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = ResoureNotFoundException.class)
+    public ResponseEntity<ExceptionMessage> handlerDuplicateIDException(
+            final ResoureNotFoundException resoureNotFoundException, final HttpServletRequest request,
+            final HttpServletResponse response) {
+
+        ExceptionMessage errorMessage = new ExceptionMessage(resoureNotFoundException.getMessage(), 500);
+
+        return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

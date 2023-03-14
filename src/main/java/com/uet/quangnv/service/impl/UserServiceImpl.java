@@ -2,6 +2,7 @@ package com.uet.quangnv.service.impl;
 
 import com.uet.quangnv.entities.Role;
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.repository.UserRepository;
 import com.uet.quangnv.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,24 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User save(User user) {
-        return null;
+    public User save(User user) throws DuplicateIDException {
+        Optional<User> optional = userRepository.findById(user.getUsername());
+        if (optional.isPresent()) {
+            throw new DuplicateIDException("Mail này đã được sử dụng trước đó!");
+        } else {
+            user = userRepository.save(user);
+        }
+        return user;
+    }
+
+    @Override
+    public void blockAccount(String username) {
+        userRepository.blockAccountById(username);
+    }
+
+    @Override
+    public void deleteAccount(String username) {
+        userRepository.deleteById(username);
     }
 
     @Override
