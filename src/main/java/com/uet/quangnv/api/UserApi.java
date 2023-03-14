@@ -12,6 +12,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/user")
 @CrossOrigin(value = "http://localhost:3000")
@@ -26,6 +28,11 @@ public class UserApi {
     @PostMapping(value = "/test")
     private ResponseEntity<String> test() {
         return new ResponseEntity<>("QuangNV Test", HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get-all-admin-2")
+    private ResponseEntity<List<User>> getAllAccounts() {
+        return new ResponseEntity<>(userService.findAllSecondaryAdmins(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/login")
