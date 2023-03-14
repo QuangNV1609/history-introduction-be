@@ -5,6 +5,7 @@ import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.service.MailService;
 import com.uet.quangnv.service.UserService;
 import com.uet.quangnv.token.JwtTokenProvider;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/user")
 @CrossOrigin(value = "http://localhost:3000")
+@Slf4j
 public class UserApi {
     @Autowired
     private UserService userService;
@@ -35,12 +37,14 @@ public class UserApi {
 
     @GetMapping(value = "/get/code")
     public ResponseEntity<String> getCode(@RequestParam("email") String email) {
+        log.info("Request to send code authentication to mail: " + email);
         Integer code = mailService.sendCode(email);
         return new ResponseEntity<String>(code.toString(), HttpStatus.OK);
     }
 
     @PostMapping(value = "/login")
     private ResponseEntity<String> login(@RequestBody User user) {
+        log.info("Request to log in to user: " + user.getUsername());
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
@@ -51,6 +55,7 @@ public class UserApi {
 
     @PostMapping(value = "/signIn")
     private ResponseEntity<User> save(@RequestBody User user) throws DuplicateIDException {
+        log.info("Request to sign in: " + user.toString());
         userService.save(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
@@ -58,12 +63,14 @@ public class UserApi {
     @PutMapping(value = "/block-account")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     private void blockAccount(@RequestParam(name = "username") String username) {
+        log.info("Request to block acccount: " + username);
         userService.blockAccount(username);
     }
 
     @DeleteMapping(value = "/delete-account")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     private void deleteAccount(@RequestParam(name = "username") String username) {
+        log.info("Request to delete acccount: " + username);
         userService.deleteAccount(username);
     }
 }

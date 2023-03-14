@@ -122,4 +122,18 @@ public class User {
     public void setLastModifiedBy(User lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", isActive=" + isActive +
+                ", createAt=" + createAt +
+                ", lastModifiedDate=" + lastModifiedDate +
+                ", createBy=" + createBy +
+                ", lastModifiedBy=" + lastModifiedBy +
+                ", roles=" + roles +
+                '}';
+    }
 }
