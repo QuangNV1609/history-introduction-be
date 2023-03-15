@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -58,5 +59,20 @@ public class UserServiceImpl implements UserService {
             authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+    }
+
+    private boolean checkRoleAdmin2(List<Role> roles) {
+        return roles
+                .stream()
+                .anyMatch(val -> val.getRoleName().equals("Admin2"));
+    }
+
+    @Override
+    public List<User> findAllSecondaryAdmins() {
+        return userRepository
+                .findAll()
+                .stream()
+                .filter(admin -> checkRoleAdmin2(admin.getRoles()))
+                .collect(Collectors.toList());
     }
 }

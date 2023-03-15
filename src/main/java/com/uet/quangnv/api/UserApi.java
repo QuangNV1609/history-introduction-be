@@ -16,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(value = "/api/user")
 @CrossOrigin(value = "http://localhost:3000")
@@ -72,5 +74,10 @@ public class UserApi {
     private void deleteAccount(@RequestParam(name = "username") String username) {
         log.info("Request to delete acccount: " + username);
         userService.deleteAccount(username);
+    }
+
+    @GetMapping(value = "/get-all-admin-2")
+    private ResponseEntity<List<User>> getAccountsAdmin2() {
+        return new ResponseEntity<>(userService.findAllSecondaryAdmins(), HttpStatus.OK);
     }
 }
