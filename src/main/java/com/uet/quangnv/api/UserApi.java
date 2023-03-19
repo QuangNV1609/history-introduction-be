@@ -60,6 +60,13 @@ public class UserApi {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
+    @PostMapping(value = "/add-admin")
+    private ResponseEntity<User> addAdmin(@RequestBody User user) throws DuplicateIDException {
+        log.info("Request to add user: " + user.toString());
+        userService.save(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
     @PutMapping(value = "/block-account")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     private void blockAccount(@RequestParam(name = "username") String username) {

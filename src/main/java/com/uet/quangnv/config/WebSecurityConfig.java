@@ -1,5 +1,6 @@
 package com.uet.quangnv.config;
 
+import com.uet.quangnv.service.UserService;
 import com.uet.quangnv.token.JwtAuthenticationEntryPoint;
 import com.uet.quangnv.token.JwtTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -57,6 +58,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         // TODO Auto-generated method stub
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder);
     }
 }

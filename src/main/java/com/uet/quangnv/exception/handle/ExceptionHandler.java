@@ -1,5 +1,6 @@
 package com.uet.quangnv.exception.handle;
 
+import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.exception.domain.ExceptionMessage;
 import com.uet.quangnv.exception.domain.ResoureNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -34,12 +35,12 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.NOT_FOUND);
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(value = ResoureNotFoundException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = DuplicateIDException.class)
     public ResponseEntity<ExceptionMessage> handlerDuplicateIDException(
-            final ResoureNotFoundException resoureNotFoundException, final HttpServletRequest request,
+            final DuplicateIDException duplicateIDException, final HttpServletRequest request,
             final HttpServletResponse response) {
 
-        ExceptionMessage errorMessage = new ExceptionMessage(resoureNotFoundException.getMessage(), 500);
+        ExceptionMessage errorMessage = new ExceptionMessage(duplicateIDException.getMessage(), 500);
 
         return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
