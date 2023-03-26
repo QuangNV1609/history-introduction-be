@@ -89,4 +89,11 @@ public class UserApi {
         log.info("Request to delete acccount: " + username);
         userService.deleteAccount(username);
     }
+
+    @GetMapping(value = "/get-admin2")
+    public ResponseEntity<Object[]> getAdmin2() {
+        log.info("Request to list info of admin_2");
+        Object[] users = userService.getAdmin2();
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
 }
