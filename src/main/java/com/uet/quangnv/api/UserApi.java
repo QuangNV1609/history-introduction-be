@@ -31,7 +31,7 @@ public class UserApi {
     private MailService mailService;
 
     @GetMapping(value = "/test")
-    private ResponseEntity<String> test() {
+    public ResponseEntity<String> test() {
         return new ResponseEntity<>("QuangNV Test", HttpStatus.OK);
     }
 
@@ -43,7 +43,7 @@ public class UserApi {
     }
 
     @PostMapping(value = "/login")
-    private ResponseEntity<String> login(@RequestBody User user) {
+    public ResponseEntity<String> login(@RequestBody User user) {
         log.info("Request to log in to user: " + user.getUsername());
         Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
@@ -54,29 +54,37 @@ public class UserApi {
     }
 
     @PostMapping(value = "/signIn")
-    private ResponseEntity<User> save(@RequestBody User user) throws DuplicateIDException {
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<User> addUserByAdmin(@RequestBody User user) throws DuplicateIDException {
         log.info("Request to sign in: " + user.toString());
-        userService.save(user);
+        userService.addUserByAdmin(user);
+        return new ResponseEntity<>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/sign-in-user")
+    public ResponseEntity<User> addUser(@RequestBody User user) throws DuplicateIDException {
+        log.info("Request to sign in: " + user.toString());
+        userService.addUserByAdmin(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/add-admin")
-    private ResponseEntity<User> addAdmin(@RequestBody User user) throws DuplicateIDException {
+    public ResponseEntity<User> addAdmin(@RequestBody User user) throws DuplicateIDException {
         log.info("Request to add user: " + user.toString());
-        userService.save(user);
+        userService.addUserByAdmin(user);
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/block-account")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    private void blockAccount(@RequestParam(name = "username") String username) {
+    public void blockAccount(@RequestParam(name = "username") String username) {
         log.info("Request to block acccount: " + username);
         userService.blockAccount(username);
     }
 
     @DeleteMapping(value = "/delete-account")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    private void deleteAccount(@RequestParam(name = "username") String username) {
+    public void deleteAccount(@RequestParam(name = "username") String username) {
         log.info("Request to delete acccount: " + username);
         userService.deleteAccount(username);
     }

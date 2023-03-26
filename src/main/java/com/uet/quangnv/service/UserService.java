@@ -5,7 +5,9 @@ import com.uet.quangnv.exception.domain.DuplicateIDException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService extends UserDetailsService {
-    User save(User user) throws DuplicateIDException;
+    User addUserByAdmin(User user) throws DuplicateIDException;
+
+    User addUser(User user) throws DuplicateIDException;
 
     void blockAccount(String username);
 

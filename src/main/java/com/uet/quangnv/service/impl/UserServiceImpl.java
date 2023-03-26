@@ -32,11 +32,28 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public User save(User user) throws DuplicateIDException {
+    public User addUserByAdmin(User user) throws DuplicateIDException {
         Optional<User> optional = userRepository.findById(user.getUsername());
         if (optional.isPresent()) {
             throw new DuplicateIDException("Mail này đã được sử dụng trước đó!");
         } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user = userRepository.save(user);
+
+        }
+        return user;
+    }
+
+    @Override
+    public User addUser(User user) throws DuplicateIDException {
+        Optional<User> optional = userRepository.findById(user.getUsername());
+        if (optional.isPresent()) {
+            throw new DuplicateIDException("Mail này đã được sử dụng trước đó!");
+        } else {
+            Optional<Role> optionalRole = roleRepository.findByRoleName("ROLE_USER");
+            if(optionalRole.isPresent()){
+                user.setRoles(List.of(optionalRole.get()));
+            }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user = userRepository.save(user);
 
