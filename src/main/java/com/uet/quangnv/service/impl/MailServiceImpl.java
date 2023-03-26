@@ -23,6 +23,6 @@ public class MailServiceImpl implements MailService {
         message.setSubject("Code");
         message.setText("Mã xác thực của bạn là: " + code);
         emailSender.send(message);
-        return null;
+        return code;
     }
 }

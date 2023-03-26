@@ -31,7 +31,6 @@ public class UserApi {
     private MailService mailService;
 
     @GetMapping(value = "/test")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<String> test() {
         return new ResponseEntity<>("QuangNV Test", HttpStatus.OK);
     }
@@ -54,7 +53,7 @@ public class UserApi {
         return new ResponseEntity<>(jwt, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/signIn")
+    @PostMapping(value = "/register")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<User> addUserByAdmin(@RequestBody User user) throws DuplicateIDException {
         log.info("Request to sign in: " + user.toString());
@@ -62,7 +61,7 @@ public class UserApi {
         return new ResponseEntity<>(user, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/sign-in-user")
+    @PostMapping(value = "/register-user")
     public ResponseEntity<User> addUser(@RequestBody User user) throws DuplicateIDException {
         log.info("Request to sign in: " + user.toString());
         userService.addUserByAdmin(user);
