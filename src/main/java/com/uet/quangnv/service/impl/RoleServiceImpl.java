@@ -1,6 +1,6 @@
 package com.uet.quangnv.service.impl;
 
-import com.uet.quangnv.entities.Role;
+import com.uet.quangnv.dto.RoleDto;
 import com.uet.quangnv.repository.RoleRepository;
 import com.uet.quangnv.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +16,7 @@ public class RoleServiceImpl implements RoleService {
     private RoleRepository roleRepository;
 
     @Override
-    public List<Role> getAllRole() {
-        return roleRepository.findAll();
+    public List<RoleDto> getAllRole() {
+        return roleRepository.getAlllRole();
     }
 }

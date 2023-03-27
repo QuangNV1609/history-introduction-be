@@ -1,10 +1,25 @@
 package com.uet.quangnv.entities;
 
+import com.uet.quangnv.dto.RoleDto;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "Role")
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "Role",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = RoleDto.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Integer.class),
+                                        @ColumnResult(name = "role_name", type = String.class)
+                                })
+                }
+        )}
+)
 public class Role {
     @Id
     private Integer id;

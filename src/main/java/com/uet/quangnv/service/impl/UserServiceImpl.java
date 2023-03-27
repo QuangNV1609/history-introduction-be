@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void blockAccount(String username) {
-        userRepository.blockAccountById(username);
+        userRepository.blockAccountByUsername(username);
     }
 
     @Override

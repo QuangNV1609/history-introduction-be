@@ -1,5 +1,6 @@
 package com.uet.quangnv.api;
 
+import com.uet.quangnv.dto.RoleDto;
 import com.uet.quangnv.entities.Role;
 import com.uet.quangnv.service.RoleService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,9 +23,9 @@ public class RoleApi {
     private RoleService roleService;
 
     @GetMapping(value = "/find-all")
-    public ResponseEntity<List<Role>> getAllRole() {
+    public ResponseEntity<List<RoleDto>> getAllRole() {
         log.info("Request to get all roles: ");
-        List<Role> roles = roleService.getAllRole();
+        List<RoleDto> roles = roleService.getAllRole();
         return new ResponseEntity<>(roles, HttpStatus.OK);
     }
 
