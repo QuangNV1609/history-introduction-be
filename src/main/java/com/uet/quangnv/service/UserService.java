@@ -12,4 +12,6 @@ public interface UserService extends UserDetailsService {
     void blockAccount(String username);
 
     void deleteAccount(String username);
+
+    Object[] getAdmin2();
 }

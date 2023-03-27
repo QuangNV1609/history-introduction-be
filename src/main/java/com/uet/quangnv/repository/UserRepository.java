@@ -11,4 +11,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Query(value = "Update User Set isActive = 0 where username = ?1", nativeQuery = true)
     @Modifying
     void blockAccountByUsername(String id);
+
+    @Query(value = "select u.username, u.password, u.isActive from User u join u.roles r where r.roleName = 'ADMIN_2'")
+    Object[] getAdmin2();
 }
