@@ -90,6 +90,7 @@ public class UserApi {
     }
 
     @GetMapping(value = "/get-admin2")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Object[]> getAdmin2() {
         log.info("Request to list info of admin_2");
         Object[] users = userService.getAdmin2();
