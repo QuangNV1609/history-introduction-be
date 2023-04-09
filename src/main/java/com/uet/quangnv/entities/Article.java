@@ -12,7 +12,7 @@ import java.util.Date;
 @Entity
 @Table(name = "article")
 @EntityListeners(AuditingEntityListener.class)
-public class Article {
+public class Article extends BaseEntity {
     @Id
     private String id;
 
@@ -28,26 +28,6 @@ public class Article {
     //Loại link: 0-hình ảnh, 1-video, 2-âm thanh.
     @Column
     private Integer typeLink;
-
-    @JoinColumn(name = "createBy")
-    @ManyToOne
-    @CreatedBy
-    private User createBy;
-
-    @JoinColumn(name = "lastModifiedBy")
-    @ManyToOne
-    @LastModifiedBy
-    private User lastModifiedBy;
-
-    @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "createAt")
-    private Date createAt;
-
-    @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "lastModifiedDate")
-    private Date lastModifiedDate;
 
     public String getId() {
         return id;
@@ -87,37 +67,5 @@ public class Article {
 
     public void setTypeLink(Integer typeLink) {
         this.typeLink = typeLink;
-    }
-
-    public User getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(User createBy) {
-        this.createBy = createBy;
-    }
-
-    public User getLastModifiedBy() {
-        return lastModifiedBy;
-    }
-
-    public void setLastModifiedBy(User lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getLastModifiedDate() {
-        return lastModifiedDate;
-    }
-
-    public void setLastModifiedDate(Date lastModifiedDate) {
-        this.lastModifiedDate = lastModifiedDate;
     }
 }

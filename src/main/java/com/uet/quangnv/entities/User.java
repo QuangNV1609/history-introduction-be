@@ -24,6 +24,9 @@ public class User {
     @Column(name = "isActive")
     private Boolean isActive;
 
+    @OneToOne(mappedBy = "user")
+    private UserInfo userInfo;
+
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "createAt")

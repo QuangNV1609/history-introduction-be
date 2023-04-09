@@ -12,6 +12,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     @Modifying
     void blockAccountByUsername(String id);
 
-    @Query(value = "select u.username, u.password, u.isActive from User u join u.roles r where r.roleName = 'ADMIN_2'")
+    @Query(value = "select u.username, u.password, u.isActive from User u join u.roles r where r.roleName = 'ROLE_ADMIN_2'")
     Object[] getAdmin2();
 }

@@ -1,7 +1,8 @@
-package com.uet.quangnv.repository;
+package com.uet.quangnv.repository.impl;
 
 import com.uet.quangnv.dto.RoleDto;
 import com.uet.quangnv.entities.Role;
+import com.uet.quangnv.repository.RoleRepositoryCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;

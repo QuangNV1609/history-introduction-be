@@ -51,7 +51,7 @@ public class UserServiceImpl implements UserService {
             throw new DuplicateIDException("Mail này đã được sử dụng trước đó!");
         } else {
             Optional<Role> optionalRole = roleRepository.findByRoleName("ROLE_USER");
-            if(optionalRole.isPresent()){
+            if (optionalRole.isPresent()) {
                 user.setRoles(List.of(optionalRole.get()));
             }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
