@@ -10,6 +10,9 @@ spring:
     multipart:
       max-file-size: 15MB
       max-request-size: 15MB
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 
 #Port
 server:

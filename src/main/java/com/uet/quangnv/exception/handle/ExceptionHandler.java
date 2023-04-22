@@ -1,5 +1,6 @@
 package com.uet.quangnv.exception.handle;
 
+import com.uet.quangnv.exception.domain.DataFormatWrong;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.exception.domain.ExceptionMessage;
 import com.uet.quangnv.exception.domain.ResoureNotFoundException;
@@ -43,6 +44,16 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
         ExceptionMessage errorMessage = new ExceptionMessage(duplicateIDException.getMessage(), 500);
 
         return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = RuntimeException.class)
+    public ResponseEntity<ExceptionMessage> handlerDataFormatWrongException(
+            final RuntimeException runtimeException, final HttpServletRequest request,
+            final HttpServletResponse response) {
+
+        ExceptionMessage errorMessage = new ExceptionMessage(runtimeException.getMessage(), 400);
+
+        return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.BAD_REQUEST);
     }
 
 }

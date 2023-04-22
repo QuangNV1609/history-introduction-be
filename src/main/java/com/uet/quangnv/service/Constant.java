@@ -18,5 +18,8 @@ public interface Constant {
     interface FileReferenceType {
         Integer USER = 0;
         String USER_NAME = "/User_";
+
+        Integer ARTICLE = 1;
+        String ARTICLE_NAME = "/Article_";
     }
 }

@@ -5,7 +5,7 @@ import com.uet.quangnv.entities.File;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface FileService {
-    File saveImage(MultipartFile file, String title, Integer type, Integer referenceType, Long referenceId);
+    File saveFile(MultipartFile file, String title, Integer type, Integer referenceType, Long referenceId);
 
     FileDto getFile(Long id);
 

@@ -36,7 +36,7 @@ public class FileApi {
                                      @RequestParam("referenceType") Integer referenceType,
                                      @RequestParam("referenceId") Long referenceId) {
         log.info("Request to save file referenceId - " + referenceId + ", referenceType - " + referenceType);
-        File fileSaved = fileService.saveImage(file, title, type, referenceType, referenceId);
+        File fileSaved = fileService.saveFile(file, title, type, referenceType, referenceId);
         return new ResponseEntity<>(fileSaved, HttpStatus.OK);
     }
 }

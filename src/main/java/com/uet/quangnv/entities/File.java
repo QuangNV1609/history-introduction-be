@@ -20,7 +20,7 @@ public class File extends BaseEntity {
     @Column(name = "fileContentType")
     private String fileContentType;
     @Column(name = "type")
-    private Integer type; //    0-imgae, 1-mp3, 2-mp4
+    private Integer type; //    0-image, 1-mp3, 2-mp4
     @Column(name = "referenceId")
     private Long referenceId;
     @Column(name = "referenceType")

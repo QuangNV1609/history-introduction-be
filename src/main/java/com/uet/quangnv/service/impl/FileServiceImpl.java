@@ -15,8 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -28,7 +28,7 @@ public class FileServiceImpl implements FileService {
     private UserInfoRepository userInfoRepository;
 
     @Override
-    public File saveImage(MultipartFile file, String title, Integer type, Integer referenceType, Long referenceId) {
+    public File saveFile(MultipartFile file, String title, Integer type, Integer referenceType, Long referenceId) {
         if (!file.isEmpty()) {
             File fileSaved = new File();
             fileSaved.setTitle(title);
@@ -40,15 +40,18 @@ public class FileServiceImpl implements FileService {
             StringBuilder filePath = new StringBuilder(Constant.LOCATION);
             if (referenceType == Constant.FileReferenceType.USER) {
                 filePath.append(Constant.FileReferenceType.USER_NAME + referenceId);
+            } else if (referenceType == Constant.FileReferenceType.ARTICLE) {
+                filePath.append(Constant.FileReferenceType.ARTICLE_NAME + referenceId);
             }
-            if (referenceType == Constant.FileType.IMAGE) {
+            if (type == Constant.FileType.IMAGE) {
                 filePath.append(Constant.FileType.IMAGE_NAME);
-            } else if (referenceType == Constant.FileType.SOUND) {
+            } else if (type == Constant.FileType.SOUND) {
                 filePath.append(Constant.FileType.SOUND_NAME);
-            } else if (referenceType == Constant.FileType.VIDEO) {
+            } else if (type == Constant.FileType.VIDEO) {
                 filePath.append(Constant.FileType.VIDEO_NAME);
             }
-            filePath.append("/" + file.getOriginalFilename());
+            String[] splitDot = file.getOriginalFilename().split("\\.");
+            filePath.append("/" + UUID.randomUUID() + "." + splitDot[splitDot.length - 1]);
             java.io.File dest = new java.io.File(filePath.toString());
             try {
                 dest.mkdirs();
