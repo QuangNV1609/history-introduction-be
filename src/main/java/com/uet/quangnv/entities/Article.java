@@ -1,10 +1,34 @@
 package com.uet.quangnv.entities;
 
+import com.uet.quangnv.dto.ArticleDto;
+import com.uet.quangnv.dto.RoleDto;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "article")
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "ArticleDto",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ArticleDto.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Long.class),
+                                        @ColumnResult(name = "title", type = String.class),
+                                        @ColumnResult(name = "content", type = String.class),
+                                        @ColumnResult(name = "history_day", type = Date.class),
+                                        @ColumnResult(name = "status", type = Integer.class),
+                                        @ColumnResult(name = "post_type", type = Integer.class),
+                                        @ColumnResult(name = "thumbnail_image", type = Long.class),
+                                        @ColumnResult(name = "cover_image", type = Long.class),
+                                        @ColumnResult(name = "username", type = String.class),
+                                        @ColumnResult(name = "author", type = String.class)
+                                })
+                }
+        )}
+)
 public class Article extends BaseEntity {
     @Id
     @GeneratedValue
