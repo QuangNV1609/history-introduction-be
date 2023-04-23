@@ -43,7 +43,13 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleDto findArticleByID(Long articleID) throws ResoureNotFoundException {
-        ArticleDto articleDto = articleRepository.getByArticleID(articleID);
+        UserDto currentUserLogin = Utils.getCurrentUserLogin();
+        ArticleDto articleDto;
+        if (currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+            articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), true);
+        } else {
+            articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), false);
+        }
         if (articleDto != null) {
             return articleDto;
         } else {

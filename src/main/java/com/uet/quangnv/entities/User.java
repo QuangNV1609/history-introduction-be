@@ -1,5 +1,7 @@
 package com.uet.quangnv.entities;
 
+import com.uet.quangnv.dto.ArticleDto;
+import com.uet.quangnv.dto.UserDto;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -13,6 +15,22 @@ import java.util.List;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "User")
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "UserDto",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = UserDto.class,
+                                columns = {
+                                        @ColumnResult(name = "username", type = String.class),
+                                        @ColumnResult(name = "first_name", type = String.class),
+                                        @ColumnResult(name = "last_name", type = String.class),
+                                        @ColumnResult(name = "birth_day", type = Date.class),
+                                        @ColumnResult(name = "imageid", type = Long.class)
+                                })
+                }
+        )}
+)
 public class User {
     @Id
     @Column(name = "username")

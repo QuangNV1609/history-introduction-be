@@ -1,11 +1,13 @@
 package com.uet.quangnv.service.impl;
 
+import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.Role;
 import com.uet.quangnv.entities.User;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.repository.RoleRepository;
 import com.uet.quangnv.repository.UserRepository;
 import com.uet.quangnv.service.UserService;
+import com.uet.quangnv.ultis.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -92,5 +94,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public Object[] getAdmin2() {
         return userRepository.getAdmin2();
+    }
+
+    @Override
+    public UserDto getUserInfo() {
+        UserDto userDto = Utils.getCurrentUserLogin();
+        UserDto userDtoSaved = userRepository.getUserInfo(userDto.getUsername());
+        userDtoSaved.setRoleName(userDto.getRoleName());
+        return userDtoSaved;
     }
 }

@@ -1,5 +1,6 @@
 package com.uet.quangnv.api;
 
+import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.User;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.service.MailService;
@@ -40,6 +41,14 @@ public class UserApi {
         log.info("Request to send code authentication to mail: " + email);
         Integer code = mailService.sendCode(email);
         return new ResponseEntity<String>(code.toString(), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/info")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserDto> getUserInfo() {
+        log.info("Request to get userinfo ");
+        UserDto userDto = userService.getUserInfo();
+        return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
     @PostMapping(value = "/login")

@@ -1,8 +1,12 @@
 package com.uet.quangnv.service;
 
+import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.User;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.GetMapping;
 
 public interface UserService extends UserDetailsService {
     User addUserByAdmin(User user) throws DuplicateIDException;
@@ -14,4 +18,6 @@ public interface UserService extends UserDetailsService {
     void deleteAccount(String username);
 
     Object[] getAdmin2();
+
+    UserDto getUserInfo();
 }

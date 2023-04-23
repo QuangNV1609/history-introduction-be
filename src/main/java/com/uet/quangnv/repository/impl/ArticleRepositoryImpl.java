@@ -44,7 +44,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public ArticleDto getByArticleID(Long articleID) {
+    public ArticleDto getByArticleID(Long articleID, String username, Boolean isAdmin) {
         StringBuilder sql = new StringBuilder("SELECT \n" +
                 "  article.id, \n" +
                 "  article.title, \n" +
@@ -64,6 +64,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.id = :articleId \n");
         Map<String, Object> params = new HashMap<>();
         params.put("articleId", articleID);
+        if (!isAdmin) {
+            sql.append("AND (article.status = 1 or user.username = :username)");
+            params.put("username", username);
+        }
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
         Utils.setParamQuery(query, params);
         return (ArticleDto) query.getSingleResult();
