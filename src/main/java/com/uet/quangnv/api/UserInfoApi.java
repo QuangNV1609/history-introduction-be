@@ -21,6 +21,7 @@ public class UserInfoApi {
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserInfo> save(@RequestBody UserInfo userInfo) {
         userInfo = userInfoService.save(userInfo);
+        userInfo.setUser(null);
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 }

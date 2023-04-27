@@ -29,9 +29,13 @@ public class UserInfoServiceImpl implements UserInfoService {
         String username = authentication.getName();
         Optional<User> optional = userRepository.findById(username);
         if (optional.isPresent()) {
-            userInfo.setUser(optional.get());
-            userInfo = userInfoRepository.save(userInfo);
-            userInfo.setUser(null);
+            Optional<UserInfo> userInfoOptional = userInfoRepository.checkUserInfoCreatedByUsername(username);
+            if (userInfoOptional.isPresent()) {
+                userInfoRepository.updateFirstNameAndLastName(userInfo.getFirstName(), userInfo.getLastName(), userInfoOptional.get().getId());
+            } else {
+                userInfo.setUser(optional.get());
+                userInfoRepository.save(userInfo);
+            }
         }
         return userInfo;
     }
