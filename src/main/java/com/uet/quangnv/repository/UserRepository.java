@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, String>, UserRepositoryCustom {
-    @Query(value = "Update User Set isActive = 0 where username = ?1", nativeQuery = true)
+    @Query(value = "Update User Set is_active = 0 where username = ?1", nativeQuery = true)
     @Modifying
     void blockAccountByUsername(String id);
 
