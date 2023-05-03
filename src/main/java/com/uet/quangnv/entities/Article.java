@@ -21,6 +21,7 @@ import java.util.Date;
                                         @ColumnResult(name = "history_day", type = Date.class),
                                         @ColumnResult(name = "status", type = Integer.class),
                                         @ColumnResult(name = "post_type", type = Integer.class),
+                                        @ColumnResult(name = "historical_period", type = Integer.class),
                                         @ColumnResult(name = "thumbnail_image", type = Long.class),
                                         @ColumnResult(name = "cover_image", type = Long.class),
                                         @ColumnResult(name = "username", type = String.class),
@@ -65,16 +66,19 @@ public class Article extends BaseEntity {
 
     @Column(name = "parentID")
     private Long parentID;
+    @Column(name = "historicalPeriod")
+    private Integer historicalPeriod;
 
     public Article() {
     }
 
-    public Article(String title, String content, Date historyDay, Integer postType, Long parentID) {
+    public Article(String title, String content, Date historyDay, Integer postType, Integer historicalPeriod, Long parentID) {
         this.title = title;
         this.content = content;
         this.historyDay = historyDay;
         this.postType = postType;
         this.parentID = parentID;
+        this.historicalPeriod = historicalPeriod;
     }
 
     public String getTitle() {
@@ -163,5 +167,13 @@ public class Article extends BaseEntity {
 
     public void setParentID(Long parentID) {
         this.parentID = parentID;
+    }
+
+    public Integer getHistoricalPeriod() {
+        return historicalPeriod;
+    }
+
+    public void setHistoricalPeriod(Integer historicalPeriod) {
+        this.historicalPeriod = historicalPeriod;
     }
 }

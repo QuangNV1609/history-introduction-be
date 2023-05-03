@@ -27,8 +27,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public Article saveArticle(String title, String content, MultipartFile coverImage, MultipartFile thumbnailImage,
-                               String historyDay, Integer postType, Long parentID) {
-        Article article = new Article(title, content, Utils.convertStringToDate(historyDay, Utils.DateFormat.YYYYMMDD), postType, parentID);
+                               String historyDay, Integer postType, Integer historicalPeriod, Long parentID) {
+        Article article = new Article(title, content, Utils.convertStringToDate(historyDay, Utils.DateFormat.YYYYMMDD), postType, historicalPeriod, parentID);
         article.setStatus(0);
         article = articleRepository.save(article);
         File coverImageSaved = fileService.saveFile(coverImage, title, Constant.FileType.IMAGE,
@@ -67,5 +67,15 @@ public class ArticleServiceImpl implements ArticleService {
             articleDtoList = articleRepository.getAllByUserLogin(currentUserLogin.getUsername(), false);
         }
         return articleDtoList;
+    }
+
+    @Override
+    public void censorship(Long articleId) {
+        articleRepository.updateStatus(articleId);
+    }
+
+    @Override
+    public void censorshipList(List<Long> articleIds) {
+        articleRepository.updateStatusByListId(articleIds);
     }
 }

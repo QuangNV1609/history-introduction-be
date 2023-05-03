@@ -18,6 +18,7 @@ public class ArticleDto {
     private Long parentID;
     private String author;
     private String username;
+    private Integer historicalPeriod;
 
     public ArticleDto() {
     }
@@ -28,6 +29,7 @@ public class ArticleDto {
                       Date historyDay,
                       Integer status,
                       Integer postType,
+                      Integer historicalPeriod,
                       Long thumbnailImage,
                       Long coverImage,
                       String username,
@@ -39,6 +41,7 @@ public class ArticleDto {
         this.thumbnailImage = thumbnailImage;
         this.historyDay = historyDay;
         this.postType = postType;
+        this.historicalPeriod = historicalPeriod;
         this.status = status;
         this.username = username;
         this.author = author;
@@ -146,5 +149,13 @@ public class ArticleDto {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getHistoricalPeriod() {
+        return historicalPeriod;
+    }
+
+    public void setHistoricalPeriod(Integer historicalPeriod) {
+        this.historicalPeriod = historicalPeriod;
     }
 }

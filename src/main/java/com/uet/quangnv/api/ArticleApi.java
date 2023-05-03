@@ -46,14 +46,28 @@ public class ArticleApi {
             @RequestParam("content") String content,
             @RequestParam("historyDay") String historyDay,
             @RequestParam("postType") Integer postType,
+            @RequestParam("historicalPeriod") Integer historicalPeriod,
             @RequestParam(value = "parentID", required = false) Long parentID
     ) {
         log.info("Request to save article");
-        Article article = articleService.saveArticle(title, content, coverImage, thumbnailImage, historyDay, postType, parentID);
+        Article article = articleService.saveArticle(title, content, coverImage, thumbnailImage, historyDay, postType, historicalPeriod, parentID);
         article.setCreateBy(null);
         article.setLastModifiedBy(null);
         return new ResponseEntity<>(article, HttpStatus.OK);
     }
 
+    @PutMapping(value = "/censorship")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void censorship(@RequestBody Long articleId) {
+        log.info("Request to censorship article");
+        articleService.censorship(articleId);
+    }
+
+    @PutMapping(value = "/censorship-list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void censorship(@RequestBody List<Long> articleIds) {
+        log.info("Request to censorship article");
+        articleService.censorshipList(articleIds);
+    }
 
 }

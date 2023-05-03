@@ -9,9 +9,13 @@ import java.util.List;
 
 public interface ArticleService {
     Article saveArticle(String title, String content, MultipartFile coverImage, MultipartFile thumbnailImage,
-                        String historyDay, Integer postType, Long parentID);
+                        String historyDay, Integer postType, Integer historicalPeriod, Long parentID);
 
     ArticleDto findArticleByID(Long articleID) throws ResoureNotFoundException;
 
     List<ArticleDto> findAllArticleByUsername();
+
+    void censorship(Long articleId);
+
+    void censorshipList(List<Long> articleIds);
 }

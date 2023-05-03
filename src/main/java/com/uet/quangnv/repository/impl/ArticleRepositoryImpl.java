@@ -24,6 +24,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.history_day, \n" +
                 "  article.status, \n" +
                 "  article.post_type, \n" +
+                "  article.historical_period, \n" +
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
@@ -52,6 +53,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.history_day, \n" +
                 "  article.status, \n" +
                 "  article.post_type, \n" +
+                "  article.historical_period, \n" +
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
