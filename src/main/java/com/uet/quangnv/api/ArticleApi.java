@@ -37,6 +37,14 @@ public class ArticleApi {
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/find-all-by-censorship")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ArticleDto>> getAllArticleByUsername(@RequestBody Boolean isCensorship) {
+        log.info("Request to get all article by censorship: ");
+        List<ArticleDto> articleDtoList = articleService.findArticleIsCensorship(isCensorship);
+        return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/save")
     @PreAuthorize("hasRole('ROLE_ADMIN_2') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Article> save(

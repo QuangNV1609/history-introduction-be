@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
     User addUserByAdmin(User user) throws DuplicateIDException;
 
@@ -16,6 +18,8 @@ public interface UserService extends UserDetailsService {
     void blockAccount(String username);
 
     void deleteAccount(String username);
+
+    void deleteMultiAccount(List<String> username);
 
     Object[] getAdmin2();
 

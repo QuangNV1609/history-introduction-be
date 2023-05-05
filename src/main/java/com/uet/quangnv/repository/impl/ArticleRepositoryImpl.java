@@ -74,4 +74,32 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         Utils.setParamQuery(query, params);
         return (ArticleDto) query.getSingleResult();
     }
+
+    @Override
+    public List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship) {
+        StringBuilder sql = new StringBuilder("SELECT \n" +
+                "  article.id, \n" +
+                "  article.title, \n" +
+                "  article.content, \n" +
+                "  article.history_day, \n" +
+                "  article.status, \n" +
+                "  article.post_type, \n" +
+                "  article.historical_period, \n" +
+                "  article.thumbnail_image, \n" +
+                "  article.cover_image,\n" +
+                "  user.username,\n" +
+                "  user_info.last_name + user_info.first_name as author\n" +
+                "FROM \n" +
+                "  article \n" +
+                "  LEFT JOIN user ON article.create_by = user.username \n" +
+                "  LEFT JOIN user_info ON user.username = user_info.user_id \n" +
+                "WHERE \n");
+        if (isCensorship) {
+            sql.append("article.status = 1");
+        } else {
+            sql.append("article.status = 0");
+        }
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        return query.getResultList();
+    }
 }

@@ -78,4 +78,9 @@ public class ArticleServiceImpl implements ArticleService {
     public void censorshipList(List<Long> articleIds) {
         articleRepository.updateStatusByListId(articleIds);
     }
+
+    @Override
+    public List<ArticleDto> findArticleIsCensorship(Boolean isCensorship) {
+        return articleRepository.getByArticleIsCensorship(isCensorship);
+    }
 }

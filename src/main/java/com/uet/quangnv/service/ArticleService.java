@@ -18,4 +18,6 @@ public interface ArticleService {
     void censorship(Long articleId);
 
     void censorshipList(List<Long> articleIds);
+
+    List<ArticleDto> findArticleIsCensorship(Boolean isCensorship);
 }

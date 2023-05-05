@@ -103,4 +103,9 @@ public class UserServiceImpl implements UserService {
         userDtoSaved.setRoleName(userDto.getRoleName());
         return userDtoSaved;
     }
+
+    @Override
+    public void deleteMultiAccount(List<String> username) {
+        userRepository.deleteAllById(username);
+    }
 }
