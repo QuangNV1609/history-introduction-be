@@ -76,7 +76,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship) {
+    public List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship, String username) {
         StringBuilder sql = new StringBuilder("SELECT \n" +
                 "  article.id, \n" +
                 "  article.title, \n" +
@@ -100,6 +100,38 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("article.status = 0");
         }
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        return query.getResultList();
+    }
+
+    @Override
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod) {
+        StringBuilder sql = new StringBuilder("SELECT \n" +
+                "  article.id, \n" +
+                "  article.title, \n" +
+                "  article.content, \n" +
+                "  article.history_day, \n" +
+                "  article.status, \n" +
+                "  article.post_type, \n" +
+                "  article.historical_period, \n" +
+                "  article.thumbnail_image, \n" +
+                "  article.cover_image,\n" +
+                "  user.username,\n" +
+                "  user_info.last_name + user_info.first_name as author\n" +
+                "FROM \n" +
+                "  article \n" +
+                "  LEFT JOIN user ON article.create_by = user.username \n" +
+                "  LEFT JOIN user_info ON user.username = user_info.user_id \n" +
+                "WHERE 1 =1\n");
+        Map<String, Object> params = new HashMap<>();
+        if (!isAdmin) {
+            sql.append("and article.status = 1\n");
+        }
+        if (historicalPeriod != null) {
+            sql.append("and article.historical_period = :historicalPeriod \n");
+            params.put("historicalPeriod", historicalPeriod);
+        }
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Utils.setParamQuery(query, params);
         return query.getResultList();
     }
 }

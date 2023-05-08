@@ -38,10 +38,18 @@ public class ArticleApi {
     }
 
     @GetMapping(value = "/find-all-by-censorship")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<ArticleDto>> getAllArticleByUsername(@RequestBody Boolean isCensorship) {
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
+    public ResponseEntity<List<ArticleDto>> getAllArticleByUsername(@RequestParam Boolean isCensorship) {
         log.info("Request to get all article by censorship: ");
         List<ArticleDto> articleDtoList = articleService.findArticleIsCensorship(isCensorship);
+        return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search-article")
+    public ResponseEntity<List<ArticleDto>> searchArticle(
+            @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod) {
+        log.info("Request to get all article by censorship: ");
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 

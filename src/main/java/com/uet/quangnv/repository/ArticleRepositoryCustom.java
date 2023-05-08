@@ -9,5 +9,6 @@ public interface ArticleRepositoryCustom {
 
     ArticleDto getByArticleID(Long articleID, String username, Boolean isAdmin);
 
-    List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship);
+    List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship, String username);
+    List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod);
 }

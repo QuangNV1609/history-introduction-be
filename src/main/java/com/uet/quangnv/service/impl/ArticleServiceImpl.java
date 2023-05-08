@@ -81,6 +81,18 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public List<ArticleDto> findArticleIsCensorship(Boolean isCensorship) {
-        return articleRepository.getByArticleIsCensorship(isCensorship);
+        UserDto currentUserLogin = Utils.getCurrentUserLogin();
+        String username = null;
+        if (!currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+            username = currentUserLogin.getUsername();
+        }
+        return articleRepository.getByArticleIsCensorship(isCensorship, username);
+    }
+
+    @Override
+    public List<ArticleDto> searchArticle(Integer historicalPeriod) {
+        UserDto currentUserLogin = Utils.getCurrentUserLogin();
+        boolean isAdmin = currentUserLogin.getRoleName().contains("ROLE_ADMIN");
+        return articleRepository.searchArticle(isAdmin, historicalPeriod);
     }
 }
