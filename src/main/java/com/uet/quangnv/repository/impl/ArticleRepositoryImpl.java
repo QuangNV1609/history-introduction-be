@@ -134,4 +134,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         Utils.setParamQuery(query, params);
         return query.getResultList();
     }
+
+    @Override
+    public void deleteArticleByIDs(List<Long> ids, String username) {
+        StringBuilder sql = new StringBuilder("Delete from article where article.id in :ids");
+        Map<String, Object> params = new HashMap<>();
+        params.put("ids", ids);
+        if (username != null) {
+            sql.append(" and article.create_by = :createBy");
+            params.put("createBy", username);
+        }
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Utils.setParamQuery(query, params);
+        query.executeUpdate();
+    }
 }

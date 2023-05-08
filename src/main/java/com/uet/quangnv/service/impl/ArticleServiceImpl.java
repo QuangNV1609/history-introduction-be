@@ -80,6 +80,16 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    public void deleteArticleByIDs(List<Long> articleIds) {
+        UserDto currentUserLogin = Utils.getCurrentUserLogin();
+        String username = null;
+        if (!currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+            username = currentUserLogin.getUsername();
+        }
+        articleRepository.deleteArticleByIDs(articleIds, username);
+    }
+
+    @Override
     public List<ArticleDto> findArticleIsCensorship(Boolean isCensorship) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         String username = null;

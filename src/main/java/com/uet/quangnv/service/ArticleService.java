@@ -19,6 +19,8 @@ public interface ArticleService {
 
     void censorshipList(List<Long> articleIds);
 
+    void deleteArticleByIDs(List<Long> articleIds);
+
     List<ArticleDto> findArticleIsCensorship(Boolean isCensorship);
     List<ArticleDto> searchArticle(Integer historicalPeriod);
 }
