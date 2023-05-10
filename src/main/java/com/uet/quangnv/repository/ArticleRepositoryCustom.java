@@ -10,7 +10,7 @@ public interface ArticleRepositoryCustom {
     ArticleDto getByArticleID(Long articleID, String username, Boolean isAdmin);
 
     List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship, String username);
-    List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod);
+    List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay);
 
     void deleteArticleByIDs(List<Long> ids, String username);
 }

@@ -104,7 +104,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod) {
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay) {
         StringBuilder sql = new StringBuilder("SELECT \n" +
                 "  article.id, \n" +
                 "  article.title, \n" +
@@ -129,6 +129,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         if (historicalPeriod != null) {
             sql.append("and article.historical_period = :historicalPeriod \n");
             params.put("historicalPeriod", historicalPeriod);
+        }
+        if (historicalPeriod != null) {
+            sql.append("and DAY(article.history_day) = DAY( :historyDay ) and MONTH( :historyDay ) \n");
+            params.put("historyDay", historyDay);
         }
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
         Utils.setParamQuery(query, params);

@@ -47,9 +47,10 @@ public class ArticleApi {
 
     @GetMapping(value = "/search-article")
     public ResponseEntity<List<ArticleDto>> searchArticle(
-            @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod) {
+            @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
+            @RequestParam(value = "historyDay", required = false) String historyDay) {
         log.info("Request to get all article by censorship: ");
-        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod);
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 
@@ -60,7 +61,7 @@ public class ArticleApi {
             @RequestParam("thumbnailImage") MultipartFile thumbnailImage,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
-            @RequestParam("historyDay") String historyDay,
+            @RequestParam(name = "historyDay", required = false) String historyDay,
             @RequestParam("postType") Integer postType,
             @RequestParam("historicalPeriod") Integer historicalPeriod,
             @RequestParam(value = "parentID", required = false) Long parentID
@@ -86,7 +87,7 @@ public class ArticleApi {
         articleService.censorshipList(articleIds);
     }
 
-    @DeleteMapping(value = "/censorship-list")
+    @DeleteMapping(value = "/delete-list-by-ids")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public void deleteArticleByIDs(@RequestBody List<Long> articleIds) {
         log.info("Request to censorship article");

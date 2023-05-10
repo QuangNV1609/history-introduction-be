@@ -14,6 +14,9 @@ import java.util.Map;
 
 public final class Utils {
     public static Date convertStringToDate(String dateString, String format) {
+        if (dateString == null || dateString.isEmpty()) {
+            return null;
+        }
         try {
             return new SimpleDateFormat(format).parse(dateString);
         } catch (Exception e) {

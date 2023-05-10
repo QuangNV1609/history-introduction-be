@@ -100,9 +100,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Integer historicalPeriod) {
+    public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         boolean isAdmin = currentUserLogin.getRoleName().contains("ROLE_ADMIN");
-        return articleRepository.searchArticle(isAdmin, historicalPeriod);
+        return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay);
     }
 }
