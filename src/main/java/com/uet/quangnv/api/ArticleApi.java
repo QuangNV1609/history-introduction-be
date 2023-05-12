@@ -91,7 +91,7 @@ public class ArticleApi {
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public void deleteArticleByIDs(@RequestBody List<Long> articleIds) {
         log.info("Request to censorship article");
-        articleService.censorshipList(articleIds);
+        articleService.deleteArticleByIDs(articleIds);
     }
 
 }

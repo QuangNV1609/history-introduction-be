@@ -130,7 +130,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("and article.historical_period = :historicalPeriod \n");
             params.put("historicalPeriod", historicalPeriod);
         }
-        if (historicalPeriod != null) {
+        if (historyDay != null) {
             sql.append("and DAY(article.history_day) = DAY( :historyDay ) and MONTH( :historyDay ) \n");
             params.put("historyDay", historyDay);
         }
@@ -145,7 +145,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         Map<String, Object> params = new HashMap<>();
         params.put("ids", ids);
         if (username != null) {
-            sql.append(" and article.create_by = :createBy");
+            sql.append(" and article.create_by = :createBy and article.status = 1");
             params.put("createBy", username);
         }
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
