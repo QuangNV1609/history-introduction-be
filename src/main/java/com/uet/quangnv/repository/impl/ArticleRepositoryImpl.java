@@ -104,7 +104,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay) {
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status) {
         StringBuilder sql = new StringBuilder("SELECT \n" +
                 "  article.id, \n" +
                 "  article.title, \n" +
@@ -125,6 +125,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         Map<String, Object> params = new HashMap<>();
         if (!isAdmin) {
             sql.append("and article.status = 1\n");
+        } else if (status != null) {
+            sql.append("and article.status = :status\n");
+            params.put("status", status);
         }
         if (historicalPeriod != null) {
             sql.append("and article.historical_period = :historicalPeriod \n");

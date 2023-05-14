@@ -21,4 +21,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long>, Article
     @Modifying
     @Query(value = "UPDATE article SET status = 1 WHERE id in ?1", nativeQuery = true)
     void updateStatusByListId(List<Long> articleIds);
+
+    @Query(value = "SELECT id From article WHERE id in ?1", nativeQuery = true)
+    List<Long> getArticleById(List<Long> articleIds);
 }

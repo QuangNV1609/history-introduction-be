@@ -76,6 +76,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void censorshipList(List<Long> articleIds) {
+        List<Long> parentID = articleRepository.getArticleById(articleIds);
         articleRepository.updateStatusByListId(articleIds);
     }
 
@@ -100,9 +101,9 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay) {
+    public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         boolean isAdmin = currentUserLogin.getRoleName().contains("ROLE_ADMIN");
-        return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay);
+        return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay, status);
     }
 }

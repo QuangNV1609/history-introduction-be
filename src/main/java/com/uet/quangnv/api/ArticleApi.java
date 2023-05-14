@@ -48,9 +48,10 @@ public class ArticleApi {
     @GetMapping(value = "/search-article")
     public ResponseEntity<List<ArticleDto>> searchArticle(
             @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
-            @RequestParam(value = "historyDay", required = false) String historyDay) {
+            @RequestParam(value = "historyDay", required = false) String historyDay,
+            @RequestParam(value = "status", required = false) Integer status) {
         log.info("Request to get all article by censorship: ");
-        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay);
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 
