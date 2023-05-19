@@ -22,7 +22,7 @@ import java.util.Date;
 
                                 })
                 }
-        )},
+        ),
         @SqlResultSetMapping(
                 name = "ArticleUserDtoView",
                 classes = {
