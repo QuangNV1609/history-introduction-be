@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ArticleService {
     Article saveArticle(String title, String content, MultipartFile coverImage, MultipartFile thumbnailImage,
-                        String historyDay, Integer postType, Integer historicalPeriod, Long parentID);
+                        String historyDay, Integer postType, Integer historicalPeriod, Long parentID) throws ResoureNotFoundException;
 
     ArticleDto findArticleByID(Long articleID) throws ResoureNotFoundException;
 
@@ -22,5 +22,5 @@ public interface ArticleService {
     void deleteArticleByIDs(List<Long> articleIds);
 
     List<ArticleDto> findArticleIsCensorship(Boolean isCensorship);
-    List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status);
+    List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType);
 }

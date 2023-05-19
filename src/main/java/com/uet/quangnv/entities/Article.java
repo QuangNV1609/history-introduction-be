@@ -25,7 +25,9 @@ import java.util.Date;
                                         @ColumnResult(name = "thumbnail_image", type = Long.class),
                                         @ColumnResult(name = "cover_image", type = Long.class),
                                         @ColumnResult(name = "username", type = String.class),
-                                        @ColumnResult(name = "author", type = String.class)
+                                        @ColumnResult(name = "author", type = String.class),
+                                        @ColumnResult(name = "create_at", type = Date.class),
+                                        @ColumnResult(name = "last_modified_date", type = Date.class)
                                 })
                 }
         )}
@@ -68,6 +70,9 @@ public class Article extends BaseEntity {
     private Long parentID;
     @Column(name = "historicalPeriod")
     private Integer historicalPeriod;
+
+    @Column(name = "version")
+    private Integer version;
 
     public Article() {
     }
@@ -175,5 +180,13 @@ public class Article extends BaseEntity {
 
     public void setHistoricalPeriod(Integer historicalPeriod) {
         this.historicalPeriod = historicalPeriod;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

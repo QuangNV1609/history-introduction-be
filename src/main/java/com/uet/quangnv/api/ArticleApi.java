@@ -49,24 +49,25 @@ public class ArticleApi {
     public ResponseEntity<List<ArticleDto>> searchArticle(
             @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
             @RequestParam(value = "historyDay", required = false) String historyDay,
-            @RequestParam(value = "status", required = false) Integer status) {
+            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(value = "postType", required = false) Integer postType) {
         log.info("Request to get all article by censorship: ");
-        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status);
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 
     @PostMapping(value = "/save")
     @PreAuthorize("hasRole('ROLE_ADMIN_2') or hasRole('ROLE_ADMIN')")
     public ResponseEntity<Article> save(
-            @RequestParam("coverImage") MultipartFile coverImage,
-            @RequestParam("thumbnailImage") MultipartFile thumbnailImage,
+            @RequestParam(name = "coverImage", required = false) MultipartFile coverImage,
+            @RequestParam(name = "thumbnailImage", required = false) MultipartFile thumbnailImage,
             @RequestParam("title") String title,
             @RequestParam("content") String content,
             @RequestParam(name = "historyDay", required = false) String historyDay,
             @RequestParam("postType") Integer postType,
             @RequestParam("historicalPeriod") Integer historicalPeriod,
             @RequestParam(value = "parentID", required = false) Long parentID
-    ) {
+    ) throws ResoureNotFoundException {
         log.info("Request to save article");
         Article article = articleService.saveArticle(title, content, coverImage, thumbnailImage, historyDay, postType, historicalPeriod, parentID);
         article.setCreateBy(null);

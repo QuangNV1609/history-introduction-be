@@ -1,6 +1,7 @@
 package com.uet.quangnv.dto;
 
-import javax.persistence.*;
+import com.uet.quangnv.entities.User;
+
 import java.util.Date;
 
 public class ArticleDto {
@@ -19,6 +20,8 @@ public class ArticleDto {
     private String author;
     private String username;
     private Integer historicalPeriod;
+    private Date createAt;
+    private Date lastModifiedDate;
 
     public ArticleDto() {
     }
@@ -33,7 +36,9 @@ public class ArticleDto {
                       Long thumbnailImage,
                       Long coverImage,
                       String username,
-                      String author) {
+                      String author,
+                      Date createAt,
+                      Date lastModifiedDate) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -45,6 +50,8 @@ public class ArticleDto {
         this.status = status;
         this.username = username;
         this.author = author;
+        this.createAt = createAt;
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     public Long getId() {
@@ -157,5 +164,21 @@ public class ArticleDto {
 
     public void setHistoricalPeriod(Integer historicalPeriod) {
         this.historicalPeriod = historicalPeriod;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

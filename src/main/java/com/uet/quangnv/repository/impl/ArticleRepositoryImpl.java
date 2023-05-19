@@ -1,9 +1,11 @@
 package com.uet.quangnv.repository.impl;
 
 import com.uet.quangnv.dto.ArticleDto;
+import com.uet.quangnv.entities.Article;
 import com.uet.quangnv.repository.ArticleRepositoryCustom;
 import com.uet.quangnv.ultis.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -28,7 +30,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author\n" +
+                "  user_info.last_name + user_info.first_name as author,\n" +
+                "  article.create_at,\n" +
+                "  article.last_modified_date\n" +
                 "FROM \n" +
                 "  article \n" +
                 "  LEFT JOIN user ON article.create_by = user.username \n" +
@@ -39,7 +43,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             params.put("username", username);
         }
         sql.append("ORDER BY article.create_by DESC");
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
         Utils.setParamQuery(query, params);
         return query.getResultList();
     }
@@ -57,7 +61,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author\n" +
+                "  user_info.last_name + user_info.first_name as author,\n" +
+                "  article.create_at,\n" +
+                "  article.last_modified_date\n" +
                 "FROM \n" +
                 "  article \n" +
                 "  LEFT JOIN user ON article.create_by = user.username \n" +
@@ -70,7 +76,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("AND (article.status = 1 or user.username = :username)");
             params.put("username", username);
         }
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
         Utils.setParamQuery(query, params);
         return (ArticleDto) query.getSingleResult();
     }
@@ -88,7 +94,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author\n" +
+                "  user_info.last_name + user_info.first_name as author,\n" +
+                "  article.create_at,\n" +
+                "  article.last_modified_date\n" +
                 "FROM \n" +
                 "  article \n" +
                 "  LEFT JOIN user ON article.create_by = user.username \n" +
@@ -99,12 +107,12 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         } else {
             sql.append("article.status = 0");
         }
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
         return query.getResultList();
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status) {
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType) {
         StringBuilder sql = new StringBuilder("SELECT \n" +
                 "  article.id, \n" +
                 "  article.title, \n" +
@@ -116,7 +124,9 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "  article.thumbnail_image, \n" +
                 "  article.cover_image,\n" +
                 "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author\n" +
+                "  user_info.last_name + user_info.first_name as author,\n" +
+                "  article.create_at,\n" +
+                "  article.last_modified_date\n" +
                 "FROM \n" +
                 "  article \n" +
                 "  LEFT JOIN user ON article.create_by = user.username \n" +
@@ -137,7 +147,11 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("and DAY(article.history_day) = DAY( :historyDay ) and MONTH( :historyDay ) \n");
             params.put("historyDay", historyDay);
         }
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        if (postType != null) {
+            sql.append("and article.post_type = :postType \n");
+            params.put("postType", postType);
+        }
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
         Utils.setParamQuery(query, params);
         return query.getResultList();
     }
@@ -151,8 +165,35 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append(" and article.create_by = :createBy and article.status = 1");
             params.put("createBy", username);
         }
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString());
         Utils.setParamQuery(query, params);
         query.executeUpdate();
+    }
+
+    @Override
+    public void updateArticle(Article article) {
+        StringBuilder sql = new StringBuilder("UPDATE article\n" +
+                "SET content = :content " +
+                ", title = :title " +
+                ", history_day = :historyDay " +
+                ", post_type = :postType , " +
+                ", historical_period = :historicalPeriod " +
+                ", version = :version");
+        Map<String, Object> params = new HashMap<>();
+        params.put("content", article.getContent());
+        params.put("historyDay", article.getHistoryDay());
+        params.put("postType", article.getPostType());
+        params.put("historicalPeriod", article.getVersion());
+        params.put("version", article.getHistoricalPeriod());
+        if (article.getCoverImage() != null) {
+            sql.append(", cover_image = :coverImage ");
+            params.put("coverImage", article.getCoverImage());
+        }
+        if (article.getThumbnailImage() != null) {
+            sql.append(", thumbnail_image = :thumbnailImage ");
+            params.put("thumbnailImage", article.getThumbnailImage());
+        }
+        sql.append(" WHERE id = :id ");
+        params.put("id", article.getId());
     }
 }
