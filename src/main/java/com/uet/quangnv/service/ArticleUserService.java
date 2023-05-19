@@ -10,4 +10,6 @@ public interface ArticleUserService {
     List<ArticleUserDto> getListArticleByUser();
 
     List<ArticleUserDto> getListArticleManyView();
+
+    ArticleUserDto getArticleView(Long articleId);
 }

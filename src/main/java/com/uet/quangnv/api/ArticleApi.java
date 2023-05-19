@@ -89,6 +89,13 @@ public class ArticleApi {
         articleService.censorshipList(articleIds);
     }
 
+    @DeleteMapping(value = "/delete-list-by-id")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
+    public void deleteArticleByIDs(@RequestBody Long articleId) {
+        log.info("Request to censorship article");
+        articleService.deleteArticleByIDs(List.of(articleId));
+    }
+
     @DeleteMapping(value = "/delete-list-by-ids")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public void deleteArticleByIDs(@RequestBody List<Long> articleIds) {

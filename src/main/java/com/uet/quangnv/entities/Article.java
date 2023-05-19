@@ -27,7 +27,8 @@ import java.util.Date;
                                         @ColumnResult(name = "username", type = String.class),
                                         @ColumnResult(name = "author", type = String.class),
                                         @ColumnResult(name = "create_at", type = Date.class),
-                                        @ColumnResult(name = "last_modified_date", type = Date.class)
+                                        @ColumnResult(name = "last_modified_date", type = Date.class),
+                                        @ColumnResult(name = "quantity", type = Long.class)
                                 })
                 }
         )}

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class ArticleUserApi {
     private ArticleUserService articleUserService;
 
     @GetMapping(value = "/get-article-by-user")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<ArticleUserDto>> getListArticleByUser() {
         List<ArticleUserDto> articleUserDtos = articleUserService.getListArticleByUser();
         return new ResponseEntity<>(articleUserDtos, HttpStatus.OK);
@@ -27,8 +29,13 @@ public class ArticleUserApi {
 
     @GetMapping(value = "/get-article-many-view")
     public ResponseEntity<List<ArticleUserDto>> getListArticleManyView() {
-        List<ArticleUserDto> articleUserDtos = articleUserService.getListArticleByUser();
+        List<ArticleUserDto> articleUserDtos = articleUserService.getListArticleManyView();
         return new ResponseEntity<>(articleUserDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/get-article-view-by-articleId/{articleId}")
+    public ResponseEntity<ArticleUserDto> getListArticleManyView(@PathVariable("articleId") Long articleId) {
+        return new ResponseEntity<>(articleUserService.getArticleView(articleId), HttpStatus.OK);
     }
 
     @PostMapping(value = "/add-view-article")

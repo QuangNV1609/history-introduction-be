@@ -50,11 +50,35 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
                 "    article.title\n" +
                 "ORDER BY\n" +
                 "    article_user.quantity\n" +
-                "DESC\n" +
-                "    ");
-        Map<String, Object> params = new HashMap<>();
-        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleUserDto");
-        Utils.setParamQuery(query, params);
+                "DESC\n");
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleUserDtoView");
         return query.getResultList();
+    }
+
+    @Override
+    public ArticleUserDto getArticleViews(Long articleID) {
+        StringBuilder sql = new StringBuilder("SELECT\n" +
+                "    article.id,\n" +
+                "    article.title,\n" +
+                "    (\n" +
+                "    SELECT\n" +
+                "        COUNT(*)\n" +
+                "    FROM\n" +
+                "        article_user\n" +
+                "    WHERE\n" +
+                "        article_user.article_id = :articleId\n" +
+                "    GROUP BY\n" +
+                "        article_user.article_id\n" +
+                ")\n" +
+                "FROM\n" +
+                "    article\n" +
+                "JOIN article_user ON article.id = article_user.article_id\n" +
+                "WHERE\n" +
+                "    article.id = :articleId\n");
+        Map<String, Object> params = new HashMap<>();
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleUserDtoView");
+        Utils.setParamQuery(query, params);
+        params.put("articleId", articleID);
+        return (ArticleUserDto) query.getSingleResult();
     }
 }

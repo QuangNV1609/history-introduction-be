@@ -19,24 +19,35 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public List<ArticleDto> getAllByUserLogin(String username, Boolean isAdmin) {
-        StringBuilder sql = new StringBuilder("SELECT \n" +
-                "  article.id, \n" +
-                "  article.title, \n" +
-                "  null as content, \n" +
-                "  article.history_day, \n" +
-                "  article.status, \n" +
-                "  article.post_type, \n" +
-                "  article.historical_period, \n" +
-                "  article.thumbnail_image, \n" +
-                "  article.cover_image,\n" +
-                "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author,\n" +
-                "  article.create_at,\n" +
-                "  article.last_modified_date\n" +
-                "FROM \n" +
-                "  article \n" +
-                "  LEFT JOIN user ON article.create_by = user.username \n" +
-                "  LEFT JOIN user_info ON user.username = user_info.user_id \n");
+        StringBuilder sql = new StringBuilder("SELECT\n" +
+                "    article.id,\n" +
+                "    article.title,\n" +
+                "    article.content,\n" +
+                "    article.history_day,\n" +
+                "    article.status,\n" +
+                "    article.post_type,\n" +
+                "    article.historical_period,\n" +
+                "    article.thumbnail_image,\n" +
+                "    article.cover_image,\n" +
+                "    USER.username,\n" +
+                "    user_info.last_name + user_info.first_name AS author,\n" +
+                "    article.create_at,\n" +
+                "    article.last_modified_date,\n" +
+                "    article_user_view.quantity\n" +
+                "FROM\n" +
+                "    article\n" +
+                "LEFT JOIN USER ON article.create_by = USER.username\n" +
+                "LEFT JOIN user_info ON USER.username = user_info.user_id\n" +
+                "LEFT JOIN(\n" +
+                "    SELECT article_user.article_id AS article_id,\n" +
+                "        COUNT(*) AS quantity\n" +
+                "    FROM\n" +
+                "        article_user\n" +
+                "    GROUP BY\n" +
+                "        article_user.article_id\n" +
+                ") AS article_user_view\n" +
+                "ON\n" +
+                "    article.id = article_user_view.article_id\n");
         Map<String, Object> params = new HashMap<>();
         if (!isAdmin) {
             sql.append("WHERE user.username = :username \n");
@@ -50,26 +61,36 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public ArticleDto getByArticleID(Long articleID, String username, Boolean isAdmin) {
-        StringBuilder sql = new StringBuilder("SELECT \n" +
-                "  article.id, \n" +
-                "  article.title, \n" +
-                "  article.content, \n" +
-                "  article.history_day, \n" +
-                "  article.status, \n" +
-                "  article.post_type, \n" +
-                "  article.historical_period, \n" +
-                "  article.thumbnail_image, \n" +
-                "  article.cover_image,\n" +
-                "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author,\n" +
-                "  article.create_at,\n" +
-                "  article.last_modified_date\n" +
-                "FROM \n" +
-                "  article \n" +
-                "  LEFT JOIN user ON article.create_by = user.username \n" +
-                "  LEFT JOIN user_info ON user.username = user_info.user_id \n" +
-                "WHERE \n" +
-                "  article.id = :articleId \n");
+        StringBuilder sql = new StringBuilder("SELECT\n" +
+                "    article.id,\n" +
+                "    article.title,\n" +
+                "    article.content,\n" +
+                "    article.history_day,\n" +
+                "    article.status,\n" +
+                "    article.post_type,\n" +
+                "    article.historical_period,\n" +
+                "    article.thumbnail_image,\n" +
+                "    article.cover_image,\n" +
+                "    USER.username,\n" +
+                "    user_info.last_name + user_info.first_name AS author,\n" +
+                "    article.create_at,\n" +
+                "    article.last_modified_date,\n" +
+                "    article_user_view.quantity as quantity\n" +
+                "FROM\n" +
+                "    article\n" +
+                "LEFT JOIN USER ON article.create_by = USER.username\n" +
+                "LEFT JOIN user_info ON USER.username = user_info.user_id\n" +
+                "LEFT JOIN(\n" +
+                "    SELECT article_user.article_id AS article_id,\n" +
+                "        COUNT(*) AS quantity\n" +
+                "    FROM\n" +
+                "        article_user\n" +
+                "    GROUP BY\n" +
+                "        article_user.article_id\n" +
+                ") AS article_user_view\n" +
+                "ON\n" +
+                "    article.id = article_user_view.article_id\n" +
+                "  WHERE article.id = :articleId \n");
         Map<String, Object> params = new HashMap<>();
         params.put("articleId", articleID);
         if (!isAdmin) {
@@ -83,24 +104,35 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public List<ArticleDto> getByArticleIsCensorship(Boolean isCensorship, String username) {
-        StringBuilder sql = new StringBuilder("SELECT \n" +
-                "  article.id, \n" +
-                "  article.title, \n" +
-                "  article.content, \n" +
-                "  article.history_day, \n" +
-                "  article.status, \n" +
-                "  article.post_type, \n" +
-                "  article.historical_period, \n" +
-                "  article.thumbnail_image, \n" +
-                "  article.cover_image,\n" +
-                "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author,\n" +
-                "  article.create_at,\n" +
-                "  article.last_modified_date\n" +
-                "FROM \n" +
-                "  article \n" +
-                "  LEFT JOIN user ON article.create_by = user.username \n" +
-                "  LEFT JOIN user_info ON user.username = user_info.user_id \n" +
+        StringBuilder sql = new StringBuilder("SELECT\n" +
+                "    article.id,\n" +
+                "    article.title,\n" +
+                "    article.content,\n" +
+                "    article.history_day,\n" +
+                "    article.status,\n" +
+                "    article.post_type,\n" +
+                "    article.historical_period,\n" +
+                "    article.thumbnail_image,\n" +
+                "    article.cover_image,\n" +
+                "    USER.username,\n" +
+                "    user_info.last_name + user_info.first_name AS author,\n" +
+                "    article.create_at,\n" +
+                "    article.last_modified_date,\n" +
+                "    article_user_view.quantity\n" +
+                "FROM\n" +
+                "    article\n" +
+                "LEFT JOIN USER ON article.create_by = USER.username\n" +
+                "LEFT JOIN user_info ON USER.username = user_info.user_id\n" +
+                "LEFT JOIN(\n" +
+                "    SELECT article_user.article_id AS article_id,\n" +
+                "        COUNT(*) AS quantity\n" +
+                "    FROM\n" +
+                "        article_user\n" +
+                "    GROUP BY\n" +
+                "        article_user.article_id\n" +
+                ") AS article_user_view\n" +
+                "ON\n" +
+                "    article.id = article_user_view.article_id\n" +
                 "WHERE \n");
         if (isCensorship) {
             sql.append("article.status = 1");
@@ -113,25 +145,36 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
     @Override
     public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType) {
-        StringBuilder sql = new StringBuilder("SELECT \n" +
-                "  article.id, \n" +
-                "  article.title, \n" +
-                "  article.content, \n" +
-                "  article.history_day, \n" +
-                "  article.status, \n" +
-                "  article.post_type, \n" +
-                "  article.historical_period, \n" +
-                "  article.thumbnail_image, \n" +
-                "  article.cover_image,\n" +
-                "  user.username,\n" +
-                "  user_info.last_name + user_info.first_name as author,\n" +
-                "  article.create_at,\n" +
-                "  article.last_modified_date\n" +
-                "FROM \n" +
-                "  article \n" +
-                "  LEFT JOIN user ON article.create_by = user.username \n" +
-                "  LEFT JOIN user_info ON user.username = user_info.user_id \n" +
-                "WHERE 1 =1\n");
+        StringBuilder sql = new StringBuilder("SELECT\n" +
+                "    article.id,\n" +
+                "    article.title,\n" +
+                "    article.content,\n" +
+                "    article.history_day,\n" +
+                "    article.status,\n" +
+                "    article.post_type,\n" +
+                "    article.historical_period,\n" +
+                "    article.thumbnail_image,\n" +
+                "    article.cover_image,\n" +
+                "    USER.username,\n" +
+                "    user_info.last_name + user_info.first_name AS author,\n" +
+                "    article.create_at,\n" +
+                "    article.last_modified_date,\n" +
+                "    article_user_view.quantity\n" +
+                "FROM\n" +
+                "    article\n" +
+                "LEFT JOIN USER ON article.create_by = USER.username\n" +
+                "LEFT JOIN user_info ON USER.username = user_info.user_id\n" +
+                "LEFT JOIN(\n" +
+                "    SELECT article_user.article_id AS article_id,\n" +
+                "        COUNT(*) AS quantity\n" +
+                "    FROM\n" +
+                "        article_user\n" +
+                "    GROUP BY\n" +
+                "        article_user.article_id\n" +
+                ") AS article_user_view\n" +
+                "ON\n" +
+                "    article.id = article_user_view.article_id\n" +
+                "WHERE 1 = 1\n");
         Map<String, Object> params = new HashMap<>();
         if (!isAdmin) {
             sql.append("and article.status = 1\n");
@@ -144,7 +187,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             params.put("historicalPeriod", historicalPeriod);
         }
         if (historyDay != null) {
-            sql.append("and DAY(article.history_day) = DAY( :historyDay ) and MONTH( :historyDay ) \n");
+            sql.append("and DAY(article.history_day) = DAY( :historyDay ) and MONTH(article.history_day) = MONTH( :historyDay ) \n");
             params.put("historyDay", historyDay);
         }
         if (postType != null) {

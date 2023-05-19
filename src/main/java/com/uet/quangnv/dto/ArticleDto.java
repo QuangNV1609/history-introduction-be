@@ -23,6 +23,8 @@ public class ArticleDto {
     private Date createAt;
     private Date lastModifiedDate;
 
+    private Long quantity;
+
     public ArticleDto() {
     }
 
@@ -38,7 +40,8 @@ public class ArticleDto {
                       String username,
                       String author,
                       Date createAt,
-                      Date lastModifiedDate) {
+                      Date lastModifiedDate,
+                      Long quantity) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -52,6 +55,7 @@ public class ArticleDto {
         this.author = author;
         this.createAt = createAt;
         this.lastModifiedDate = lastModifiedDate;
+        this.quantity = quantity;
     }
 
     public Long getId() {
@@ -180,5 +184,13 @@ public class ArticleDto {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public Long getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Long quantity) {
+        this.quantity = quantity;
     }
 }

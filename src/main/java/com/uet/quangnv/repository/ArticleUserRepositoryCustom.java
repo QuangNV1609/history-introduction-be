@@ -8,4 +8,6 @@ public interface ArticleUserRepositoryCustom {
     List<ArticleUserDto> getListArticleByUser(String username);
 
     List<ArticleUserDto> getListArticleManyViews();
+
+    ArticleUserDto getArticleViews(Long articleID);
 }

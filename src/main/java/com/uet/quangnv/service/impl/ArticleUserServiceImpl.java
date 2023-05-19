@@ -50,4 +50,9 @@ public class ArticleUserServiceImpl implements ArticleUserService {
     public List<ArticleUserDto> getListArticleManyView() {
         return articleUserRepository.getListArticleManyViews();
     }
+
+    @Override
+    public ArticleUserDto getArticleView(Long articleId) {
+        return null;
+    }
 }
