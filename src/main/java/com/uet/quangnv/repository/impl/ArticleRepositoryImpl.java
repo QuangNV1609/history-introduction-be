@@ -22,7 +22,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    article.content,\n" +
+                "    null as content,\n" +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +
@@ -107,7 +107,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    article.content,\n" +
+                "    null as content,\n" +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +
@@ -148,7 +148,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    article.content,\n" +
+                "    null as content,\n" +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +
@@ -219,15 +219,18 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "SET content = :content " +
                 ", title = :title " +
                 ", history_day = :historyDay " +
-                ", post_type = :postType , " +
-                ", historical_period = :historicalPeriod " +
-                ", version = :version");
+                ", post_type = :postType " +
+                ", version = :version ");
         Map<String, Object> params = new HashMap<>();
         params.put("content", article.getContent());
+        params.put("title", article.getTitle());
         params.put("historyDay", article.getHistoryDay());
         params.put("postType", article.getPostType());
-        params.put("historicalPeriod", article.getVersion());
         params.put("version", article.getHistoricalPeriod());
+        if (article.getHistoricalPeriod() != null) {
+            sql.append(", historical_period = :historicalPeriod ");
+            params.put("historicalPeriod", article.getHistoricalPeriod());
+        }
         if (article.getCoverImage() != null) {
             sql.append(", cover_image = :coverImage ");
             params.put("coverImage", article.getCoverImage());
@@ -236,7 +239,14 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append(", thumbnail_image = :thumbnailImage ");
             params.put("thumbnailImage", article.getThumbnailImage());
         }
+        if (article.getCreateAt() != null) {
+            sql.append(", thumbnail_image = :thumbnailImage ");
+            params.put("thumbnailImage", article.getThumbnailImage());
+        }
         sql.append(" WHERE id = :id ");
         params.put("id", article.getId());
+        Query query = entityManager.createNativeQuery(sql.toString());
+        Utils.setParamQuery(query, params);
+        query.executeUpdate();
     }
 }

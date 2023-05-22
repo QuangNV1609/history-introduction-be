@@ -2,6 +2,7 @@ package com.uet.quangnv.api;
 
 import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.exception.domain.DataFormatWrong;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.service.MailService;
 import com.uet.quangnv.service.UserService;
@@ -56,8 +57,7 @@ public class UserApi {
     @PostMapping(value = "/login")
     public ResponseEntity<String> login(@RequestBody User user) {
         log.info("Request to log in to user: " + user.getUsername());
-        Authentication authentication = authenticationManager
-                .authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String jwt = jwtTokenProvider.generateToken(user);
@@ -91,6 +91,13 @@ public class UserApi {
     public void blockAccount(@RequestParam(name = "username") String username) {
         log.info("Request to block acccount: " + username);
         userService.blockAccount(username);
+    }
+
+    @PutMapping(value = "/change-password")
+    @PreAuthorize("isAuthenticated()")
+    public void changePassword(@RequestBody UserDto userDto) throws DataFormatWrong {
+        log.info("Request to change password");
+        userService.changePassword(userDto);
     }
 
     @DeleteMapping(value = "/delete-account")

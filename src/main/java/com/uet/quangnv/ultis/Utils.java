@@ -7,10 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.persistence.Query;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public final class Utils {
     public static Date convertStringToDate(String dateString, String format) {
@@ -23,6 +20,17 @@ public final class Utils {
             throw new RuntimeException("Ngày tháng sai định dạng!");
         }
     }
+
+    public static Date beforeSendDateToClient(Date date) {
+        try {
+            SimpleDateFormat myDate = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+            myDate.setTimeZone(TimeZone.getTimeZone("UTC"));
+            return myDate.parse(date.toString());
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 
     public static void setParamQuery(Query query, Map<String, Object> paramMap) {
         paramMap.forEach((key, value) -> {
@@ -43,7 +51,7 @@ public final class Utils {
     }
 
     public interface DateFormat {
-        String DDMMYYYY = "dd/mm/yyyy";
-        String YYYYMMDD = "yyyy-mm-dd";
+        String DDMMYYYY = "dd/MM/yyyy";
+        String YYYYMMDD = "yyyy-MM-dd";
     }
 }

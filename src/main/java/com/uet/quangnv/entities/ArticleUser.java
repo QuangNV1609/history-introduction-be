@@ -18,8 +18,11 @@ import java.util.Date;
                                         @ColumnResult(name = "username", type = String.class),
                                         @ColumnResult(name = "article_id", type = Long.class),
                                         @ColumnResult(name = "title", type = String.class),
-                                        @ColumnResult(name = "quantity", type = Long.class)
-
+                                        @ColumnResult(name = "cover_image", type = Long.class),
+                                        @ColumnResult(name = "quantity", type = Long.class),
+                                        @ColumnResult(name = "last_modified_date", type = Date.class),
+                                        @ColumnResult(name = "create_at", type = Date.class),
+                                        @ColumnResult(name = "last_date_view", type = Date.class)
                                 })
                 }
         ),
@@ -31,7 +34,10 @@ import java.util.Date;
                                 columns = {
                                         @ColumnResult(name = "article_id", type = Long.class),
                                         @ColumnResult(name = "title", type = String.class),
-                                        @ColumnResult(name = "quantity", type = Long.class)
+                                        @ColumnResult(name = "cover_image", type = Long.class),
+                                        @ColumnResult(name = "quantity", type = Long.class),
+                                        @ColumnResult(name = "last_modified_date", type = Date.class),
+                                        @ColumnResult(name = "create_at", type = Date.class)
 
                                 })
                 }
@@ -47,6 +53,9 @@ public class ArticleUser {
     private Long articleId;
     @Column(name = "quantity")
     private Long quantity;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "lastDateView")
+    private Date lastDateView;
 
     public ArticleUser() {
     }
@@ -87,5 +96,13 @@ public class ArticleUser {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getLastDateView() {
+        return lastDateView;
+    }
+
+    public void setLastDateView(Date lastDateView) {
+        this.lastDateView = lastDateView;
     }
 }

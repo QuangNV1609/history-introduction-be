@@ -2,6 +2,7 @@ package com.uet.quangnv.service;
 
 import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.exception.domain.DataFormatWrong;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -16,6 +17,8 @@ public interface UserService extends UserDetailsService {
     User addUser(User user) throws DuplicateIDException;
 
     void blockAccount(String username);
+
+    void changePassword(UserDto userDto) throws DataFormatWrong;
 
     void deleteAccount(String username);
 

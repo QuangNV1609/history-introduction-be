@@ -65,7 +65,7 @@ public class ArticleApi {
             @RequestParam("content") String content,
             @RequestParam(name = "historyDay", required = false) String historyDay,
             @RequestParam("postType") Integer postType,
-            @RequestParam("historicalPeriod") Integer historicalPeriod,
+            @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
             @RequestParam(value = "parentID", required = false) Long parentID
     ) throws ResoureNotFoundException {
         log.info("Request to save article");
@@ -77,7 +77,7 @@ public class ArticleApi {
 
     @PutMapping(value = "/censorship")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void censorship(@RequestBody Long articleId) {
+    public void censorship(@RequestBody Long articleId) throws ResoureNotFoundException {
         log.info("Request to censorship article");
         articleService.censorship(articleId);
     }

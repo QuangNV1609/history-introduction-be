@@ -21,14 +21,18 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
                 "    article_user.username,\n" +
                 "    article_user.article_id,\n" +
                 "    article.title,\n" +
-                "    article_user.quantity\n" +
+                "    article.cover_image,\n" +
+                "    article_user.quantity,\n" +
+                "    article.last_modified_date,\n" +
+                "    article.create_at,\n" +
+                "    article_user.last_date_view\n" +
                 "FROM\n" +
                 "    article_user\n" +
                 "JOIN article ON article_user.article_id = article.id\n" +
                 "WHERE\n" +
                 "    article_user.username = :username \n" +
                 "ORDER BY\n" +
-                "    article_user.quantity DESC");
+                "    article_user.last_date_view DESC");
         Map<String, Object> params = new HashMap<>();
         params.put("username", username);
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleUserDto");
@@ -41,7 +45,10 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article_user.article_id,\n" +
                 "    article.title,\n" +
-                "    COUNT(*) AS quantity\n" +
+                "    article.cover_image,\n" +
+                "    SUM(article_user.quantity) AS quantity,\n" +
+                "    article.last_modified_date,\n" +
+                "    article.create_at\n" +
                 "FROM\n" +
                 "    article_user\n" +
                 "JOIN article ON article_user.article_id = article.id\n" +
@@ -49,7 +56,7 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
                 "    article_user.article_id,\n" +
                 "    article.title\n" +
                 "ORDER BY\n" +
-                "    article_user.quantity\n" +
+                "    quantity\n" +
                 "DESC\n");
         Query query = entityManager.createNativeQuery(sql.toString(), "ArticleUserDtoView");
         return query.getResultList();
@@ -60,9 +67,10 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
+                "    article.cover_image,\n" +
                 "    (\n" +
                 "    SELECT\n" +
-                "        COUNT(*)\n" +
+                "        SUM(article_user.quantity)\n" +
                 "    FROM\n" +
                 "        article_user\n" +
                 "    WHERE\n" +
@@ -70,6 +78,8 @@ public class ArticleUserRepositoryImpl implements ArticleUserRepositoryCustom {
                 "    GROUP BY\n" +
                 "        article_user.article_id\n" +
                 ")\n" +
+                "    article.last_modified_date,\n" +
+                "    article.create_at\n" +
                 "FROM\n" +
                 "    article\n" +
                 "JOIN article_user ON article.id = article_user.article_id\n" +

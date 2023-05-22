@@ -3,9 +3,13 @@ package com.uet.quangnv.service.impl;
 import com.uet.quangnv.dto.ArticleDto;
 import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.Article;
+import com.uet.quangnv.entities.ArticleUser;
 import com.uet.quangnv.entities.File;
+import com.uet.quangnv.entities.User;
 import com.uet.quangnv.exception.domain.ResoureNotFoundException;
 import com.uet.quangnv.repository.ArticleRepository;
+import com.uet.quangnv.repository.ArticleUserRepository;
+import com.uet.quangnv.repository.UserRepository;
 import com.uet.quangnv.service.ArticleService;
 import com.uet.quangnv.service.ArticleUserService;
 import com.uet.quangnv.service.Constant;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,24 +33,25 @@ public class ArticleServiceImpl implements ArticleService {
     private ArticleRepository articleRepository;
 
     @Autowired
-    private ArticleUserService articleUserService;
+    private ArticleUserRepository articleUserRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public Article saveArticle(String title, String content, MultipartFile coverImage, MultipartFile thumbnailImage,
-                               String historyDay, Integer postType, Integer historicalPeriod, Long parentID) throws ResoureNotFoundException {
-        Article article = new Article(title, content, Utils.convertStringToDate(historyDay, Utils.DateFormat.YYYYMMDD), postType, historicalPeriod, parentID);
+    public Article saveArticle(String title, String content, MultipartFile coverImage, MultipartFile thumbnailImage, String historyDay, Integer postType, Integer historicalPeriod, Long parentID) throws ResoureNotFoundException {
+        Article article = new Article(title, content, (historyDay != null && !historyDay.trim().isEmpty() && !historyDay.equals("null")) ? Utils.convertStringToDate(historyDay, Utils.DateFormat.YYYYMMDD) : null, postType, historicalPeriod, parentID);
+        Date createAt = null;
         if (parentID != null) {
             Optional<Article> articleParent = articleRepository.findById(parentID);
             if (articleParent.isPresent()) {
                 if (articleParent.get().getStatus() == 0) {
                     if (coverImage != null) {
-                        File coverImageSaved = fileService.saveFile(coverImage, title, Constant.FileType.IMAGE,
-                                Constant.FileReferenceType.ARTICLE, parentID);
+                        File coverImageSaved = fileService.saveFile(coverImage, title, Constant.FileType.IMAGE, Constant.FileReferenceType.ARTICLE, parentID);
                         article.setCoverImage(coverImageSaved.getId());
                     }
                     if (thumbnailImage != null) {
-                        File thumbnailImageSave = fileService.saveFile(thumbnailImage, title, Constant.FileType.IMAGE,
-                                Constant.FileReferenceType.ARTICLE, parentID);
+                        File thumbnailImageSave = fileService.saveFile(thumbnailImage, title, Constant.FileType.IMAGE, Constant.FileReferenceType.ARTICLE, parentID);
                         article.setThumbnailImage(thumbnailImageSave.getId());
                     }
                     article.setId(parentID);
@@ -53,7 +59,7 @@ public class ArticleServiceImpl implements ArticleService {
                     articleRepository.updateArticle(article);
                     return article;
                 } else {
-                    articleRepository.updateStatusByListParentId(List.of(parentID));
+                    createAt = articleParent.get().getCreateAt();
                 }
                 article.setCoverImage(articleParent.get().getCoverImage());
                 article.setThumbnailImage(articleParent.get().getThumbnailImage());
@@ -66,15 +72,14 @@ public class ArticleServiceImpl implements ArticleService {
         article.setStatus(0);
         article = articleRepository.save(article);
         if (coverImage != null) {
-            File coverImageSaved = fileService.saveFile(coverImage, title, Constant.FileType.IMAGE,
-                    Constant.FileReferenceType.ARTICLE, parentID);
+            File coverImageSaved = fileService.saveFile(coverImage, title, Constant.FileType.IMAGE, Constant.FileReferenceType.ARTICLE, parentID);
             article.setCoverImage(coverImageSaved.getId());
         }
         if (thumbnailImage != null) {
-            File thumbnailImageSave = fileService.saveFile(thumbnailImage, title, Constant.FileType.IMAGE,
-                    Constant.FileReferenceType.ARTICLE, parentID);
+            File thumbnailImageSave = fileService.saveFile(thumbnailImage, title, Constant.FileType.IMAGE, Constant.FileReferenceType.ARTICLE, parentID);
             article.setThumbnailImage(thumbnailImageSave.getId());
         }
+        article.setCreateAt(createAt);
         articleRepository.updateArticle(article);
         return article;
     }
@@ -89,7 +94,29 @@ public class ArticleServiceImpl implements ArticleService {
             articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), false);
         }
         if (articleDto != null) {
-            articleUserService.addViewArticle(articleID);
+            Optional<Article> optionalArticle = articleRepository.findById(articleID);
+            if (optionalArticle.isPresent() && optionalArticle.get().getStatus() == 1) {
+                Optional<User> optionalUser = userRepository.findById(currentUserLogin.getUsername());
+                if (optionalUser.isPresent()) {
+                    Optional<ArticleUser> optional = articleUserRepository.findByArticleIdAndUser(currentUserLogin.getUsername(), articleID);
+                    if (optional.isPresent()) {
+                        articleUserRepository.addViewForArticle(optional.get().getQuantity() + 1, currentUserLogin.getUsername(), articleID);
+                    } else {
+                        ArticleUser articleUser = new ArticleUser(currentUserLogin.getUsername(), articleID, 1L);
+                        articleUserRepository.save(articleUser);
+                    }
+                    articleUserRepository.updateLastDateView(new Date(), currentUserLogin.getUsername(), articleID);
+                } else {
+                    Optional<ArticleUser> optional = articleUserRepository.findByArticleIdAndUserIsNull(articleID);
+                    if (optional.isPresent()) {
+                        articleUserRepository.addViewForArticleAndUserIsNull(optional.get().getQuantity() + 1, articleID);
+                    } else {
+                        ArticleUser articleUser = new ArticleUser(null, articleID, 1L);
+                        articleUserRepository.save(articleUser);
+                    }
+                }
+
+            }
             return articleDto;
         } else {
             throw new ResoureNotFoundException("Không tìm thấy bài viết!");
@@ -109,8 +136,17 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
-    public void censorship(Long articleId) {
-        articleRepository.updateStatus(articleId);
+    public void censorship(Long articleId) throws ResoureNotFoundException {
+        Optional<Article> optional = articleRepository.findById(articleId);
+        if (optional.isPresent()) {
+            articleRepository.updateStatus(articleId);
+            if (optional.get().getParentID() != null) {
+                articleRepository.updateStatusByListParentId(List.of(optional.get().getParentID()));
+            }
+        } else {
+            throw new ResoureNotFoundException("Không tìm thấy bài viết!");
+        }
+
     }
 
     @Override

@@ -1,8 +1,12 @@
 package com.uet.quangnv.dto;
 
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.ultis.Utils;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class ArticleDto {
     private Long id;
@@ -47,14 +51,14 @@ public class ArticleDto {
         this.content = content;
         this.coverImage = coverImage;
         this.thumbnailImage = thumbnailImage;
-        this.historyDay = historyDay;
+        this.historyDay = Utils.beforeSendDateToClient(historyDay);
         this.postType = postType;
         this.historicalPeriod = historicalPeriod;
         this.status = status;
         this.username = username;
         this.author = author;
-        this.createAt = createAt;
-        this.lastModifiedDate = lastModifiedDate;
+        this.createAt = Utils.beforeSendDateToClient(createAt);
+        this.lastModifiedDate = Utils.beforeSendDateToClient(lastModifiedDate);
         this.quantity = quantity;
     }
 

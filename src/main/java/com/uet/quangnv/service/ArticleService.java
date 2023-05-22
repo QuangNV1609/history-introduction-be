@@ -15,7 +15,7 @@ public interface ArticleService {
 
     List<ArticleDto> findAllArticleByUsername();
 
-    void censorship(Long articleId);
+    void censorship(Long articleId) throws ResoureNotFoundException;
 
     void censorshipList(List<Long> articleIds);
 

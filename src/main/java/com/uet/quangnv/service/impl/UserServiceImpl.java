@@ -3,6 +3,7 @@ package com.uet.quangnv.service.impl;
 import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.Role;
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.exception.domain.DataFormatWrong;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.repository.RoleRepository;
 import com.uet.quangnv.repository.UserRepository;
@@ -107,5 +108,25 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteMultiAccount(List<String> username) {
         userRepository.deleteAllById(username);
+    }
+
+    @Override
+    public void changePassword(UserDto userDto) throws DataFormatWrong {
+        if (userDto.getNewPassword().equals(userDto.getPassword())) {
+            throw new DataFormatWrong(" Mật khẩu mới và mật khẩu cũ đang trùng nhau!");
+        } else {
+            userDto.setUsername(Utils.getCurrentUserLogin().getUsername());
+            Optional<User> optional = userRepository.findById(userDto.getUsername());
+            if (!optional.isPresent()) {
+                throw new UsernameNotFoundException(userDto.getUsername() + " not found!");
+            } else if (!optional.get().getActive()) {
+                throw new UsernameNotFoundException(userDto.getUsername() + " is not active");
+            } else if (!passwordEncoder.matches(userDto.getPassword(), optional.get().getPassword())) {
+                throw new DataFormatWrong("Mật khẩu cũ không đúng!");
+            } else {
+                userRepository.updatePassword(passwordEncoder.encode(userDto.getPassword()), userDto.getUsername());
+            }
+        }
+
     }
 }
