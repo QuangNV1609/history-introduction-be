@@ -16,7 +16,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
     private EntityManager entityManager;
 
     @Override
-    public List<QuestionDto> searchQuestions(Integer historicalPeriod, Integer status, Integer size) {
+    public List<QuestionDto> searchQuestions(Integer historicalPeriod, Integer status, Integer size, Boolean isAdmin, String username) {
         StringBuilder sqlSearch = new StringBuilder("SELECT\n" +
                 "    question.id,\n" +
                 "    question.content,\n" +
@@ -24,7 +24,7 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
                 "    question.article_id,\n" +
                 "    article.title\n" +
                 "FROM\n" +
-                "    questionn\n" +
+                "    question\n" +
                 "JOIN article ON question.article_id = article.id\n" +
                 "WHERE 1 = 1\n");
         Map<String, Object> params = new HashMap<>();
@@ -32,9 +32,18 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             sqlSearch.append("AND article.historical_period = :historicalPeriod\n");
             params.put("historicalPeriod", historicalPeriod);
         }
-        if (historicalPeriod != null) {
+        if (status != null) {
             sqlSearch.append("AND article.status = :status\n");
             params.put("status", status);
+        } else if (!isAdmin && username == null) {
+            sqlSearch.append("AND article.status = 1\n");
+        }
+        if (username != null) {
+            sqlSearch.append("AND article.create_by = :createBy\n");
+            params.put("createBy", username);
+        }
+        if (size != null) {
+            sqlSearch.append("LIMIT " + size);
         }
         Query query = entityManager.createNativeQuery(sqlSearch.toString(), "QuestionDto");
         Utils.setParamQuery(query, params);

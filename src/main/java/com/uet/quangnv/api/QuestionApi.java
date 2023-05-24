@@ -20,8 +20,16 @@ public class QuestionApi {
     @Autowired
     private QuestionService questionService;
 
-    @GetMapping(value = "/search-questionDtos")
+    @GetMapping(value = "/get-question-for-exam")
     @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<List<QuestionDto>> getQuestionForExam(
+            @RequestParam("historicalPeriod") Integer historicalPeriod,
+            @RequestParam("size") Integer size) {
+        return new ResponseEntity<>(questionService.getQuestionForExam(historicalPeriod, size), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search-question")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public ResponseEntity<List<QuestionDto>> searchQuestionDtos(
             @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
             @RequestParam(value = "status", required = false) Integer status,
@@ -29,13 +37,13 @@ public class QuestionApi {
         return new ResponseEntity<>(questionService.searchQuestionDto(historicalPeriod, status, size), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/save-questionDto")
+    @PostMapping(value = "/save-question")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public ResponseEntity<QuestionDto> saveListQuestion(@RequestBody QuestionDto questionDto) throws DataFormatWrong {
         return new ResponseEntity<>(questionService.saveQuestionDto(questionDto), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/save-list-questionDto")
+    @PostMapping(value = "/save-list-question")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
     public ResponseEntity<List<QuestionDto>> saveListQuestion(@RequestBody List<QuestionDto> questionDtos) throws DataFormatWrong {
         return new ResponseEntity<>(questionService.saveListQuestionDto(questionDtos), HttpStatus.OK);

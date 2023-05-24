@@ -73,7 +73,19 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public List<QuestionDto> searchQuestionDto(Integer historicalPeriod, Integer status, Integer size) {
-        return questionRepository.searchQuestions(historicalPeriod, status, size);
+        UserDto currentUserLogin = Utils.getCurrentUserLogin();
+        String username = null;
+        Boolean isAdmin = false;
+        if (currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
+            username = currentUserLogin.getUsername();
+            isAdmin = true;
+        }
+        return questionRepository.searchQuestions(historicalPeriod, status, size, isAdmin, username);
+    }
+
+    @Override
+    public List<QuestionDto> getQuestionForExam(Integer historicalPeriod, Integer size) {
+        return questionRepository.searchQuestions(historicalPeriod, 1, size, false, null);
     }
 
     @Override
