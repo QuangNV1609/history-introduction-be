@@ -13,4 +13,6 @@ public interface QuestionService {
     List<QuestionDto> searchQuestionDto(Integer historicalPeriod, Integer status, Integer size);
 
     void censorshipListQuestion(List<Long> questionIds);
+
+    void deleteListQuestion(List<Long> questionIds);
 }

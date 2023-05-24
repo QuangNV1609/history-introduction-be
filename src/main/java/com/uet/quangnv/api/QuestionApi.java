@@ -53,5 +53,17 @@ public class QuestionApi {
         questionService.censorshipListQuestion(questionIds);
     }
 
+    @DeleteMapping(value = "/delete")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteQuestion(@RequestBody Long questionIds) {
+        questionService.censorshipListQuestion(List.of(questionIds));
+    }
+
+    @DeleteMapping(value = "/delete-list")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void deleteListQuestion(@RequestBody List<Long> questionIds) {
+        questionService.censorshipListQuestion(questionIds);
+    }
+
 
 }

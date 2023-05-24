@@ -13,4 +13,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long>, Quest
     @Query(value = "update from question set status = 1 where id in ?", nativeQuery = true)
     @Modifying
     void censorshipListQuestion(List<Long> questionIds);
+
+    @Query(value = "delete from question where id in ?", nativeQuery = true)
+    @Modifying
+    void deleteListQuestion(List<Long> questionIds);
 }

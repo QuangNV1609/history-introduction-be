@@ -80,4 +80,9 @@ public class QuestionServiceImpl implements QuestionService {
     public void censorshipListQuestion(List<Long> questionIds) {
         questionRepository.censorshipListQuestion(questionIds);
     }
+
+    @Override
+    public void deleteListQuestion(List<Long> questionIds) {
+        questionRepository.deleteListQuestion(questionIds);
+    }
 }
