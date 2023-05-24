@@ -139,7 +139,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         } else {
             sql.append("article.status = 0");
         }
-        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY last_modified_date DESC", "ArticleDto");
         return query.getResultList();
     }
 
@@ -194,7 +194,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("and article.post_type = :postType \n");
             params.put("postType", postType);
         }
-        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY last_modified_date DESC", "ArticleDto");
         Utils.setParamQuery(query, params);
         return query.getResultList();
     }

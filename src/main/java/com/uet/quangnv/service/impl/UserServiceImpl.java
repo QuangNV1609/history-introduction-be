@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
             } else if (!passwordEncoder.matches(userDto.getPassword(), optional.get().getPassword())) {
                 throw new DataFormatWrong("Mật khẩu cũ không đúng!");
             } else {
-                userRepository.updatePassword(passwordEncoder.encode(userDto.getPassword()), userDto.getUsername());
+                userRepository.updatePassword(passwordEncoder.encode(userDto.getNewPassword()), userDto.getUsername());
             }
         }
 
