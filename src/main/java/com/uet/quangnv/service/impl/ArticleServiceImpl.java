@@ -88,7 +88,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDto findArticleByID(Long articleID) throws ResoureNotFoundException {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         ArticleDto articleDto;
-        if (currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+        if (currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
             articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), true);
         } else {
             articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), false);
@@ -127,7 +127,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDto> findAllArticleByUsername() {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         List<ArticleDto> articleDtoList;
-        if (currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+        if (currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
             articleDtoList = articleRepository.getAllByUserLogin(currentUserLogin.getUsername(), true);
         } else {
             articleDtoList = articleRepository.getAllByUserLogin(currentUserLogin.getUsername(), false);
@@ -160,7 +160,7 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticleByIDs(List<Long> articleIds) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         String username = null;
-        if (!currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+        if (!currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
             username = currentUserLogin.getUsername();
         }
         articleRepository.deleteArticleByIDs(articleIds, username);
@@ -170,7 +170,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDto> findArticleIsCensorship(Boolean isCensorship) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         String username = null;
-        if (!currentUserLogin.getRoleName().contains("ROLE_ADMIN")) {
+        if (!currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
             username = currentUserLogin.getUsername();
         }
         return articleRepository.getByArticleIsCensorship(isCensorship, username);
@@ -179,7 +179,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
-        boolean isAdmin = currentUserLogin.getRoleName().contains("ROLE_ADMIN");
+        boolean isAdmin = currentUserLogin.getRoleName().equals("ROLE_ADMIN");
         return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay, status, postType);
     }
 }

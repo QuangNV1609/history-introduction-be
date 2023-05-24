@@ -1,31 +1,52 @@
 package com.uet.quangnv.entities;
 
+import com.uet.quangnv.dto.ArticleDto;
+import com.uet.quangnv.dto.QuestionDto;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-@Table(name = "Exam")
-public class Question {
+@Table(name = "question")
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "QuestionDto",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = QuestionDto.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Long.class),
+                                        @ColumnResult(name = "content", type = String.class),
+                                        @ColumnResult(name = "status", type = Integer.class),
+                                        @ColumnResult(name = "article_id", type = Date.class),
+                                        @ColumnResult(name = "title", type = String.class)
+                                })
+                }
+        )}
+)
+public class Question extends BaseEntity {
     @Id
     @GeneratedValue
     private Long id;
     @Column(name = "content")
     private String content;
-    @Column(name = "answerA")
-    private String answerA;
-    @Column(name = "answerB")
-    private String answerB;
-    @Column(name = "answerC")
-    private String answerC;
-    @Column(name = "answerD")
-    private String answerD;
-    @Column(name = "correct")
-    private Integer correct;
-    @ManyToOne
-    @JoinColumn(name = "exam_id")
-    private Exam exam;
+
+    @Column(name = "articleId")
+    private Long articleId;
+
+    @Column(name = "status")
+    private Integer status;
+
+    public Question() {
+    }
+
+    public Question(Long id, String content, Long articleId) {
+        this.id = id;
+        this.content = content;
+        this.articleId = articleId;
+    }
 
     public Long getId() {
         return id;
@@ -43,51 +64,19 @@ public class Question {
         this.content = content;
     }
 
-    public String getAnswerA() {
-        return answerA;
+    public Long getArticleId() {
+        return articleId;
     }
 
-    public void setAnswerA(String answerA) {
-        this.answerA = answerA;
+    public void setArticleId(Long articleId) {
+        this.articleId = articleId;
     }
 
-    public String getAnswerB() {
-        return answerB;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setAnswerB(String answerB) {
-        this.answerB = answerB;
-    }
-
-    public String getAnswerC() {
-        return answerC;
-    }
-
-    public void setAnswerC(String answerC) {
-        this.answerC = answerC;
-    }
-
-    public String getAnswerD() {
-        return answerD;
-    }
-
-    public void setAnswerD(String answerD) {
-        this.answerD = answerD;
-    }
-
-    public Integer getCorrect() {
-        return correct;
-    }
-
-    public void setCorrect(Integer correct) {
-        this.correct = correct;
-    }
-
-    public Exam getExam() {
-        return exam;
-    }
-
-    public void setExam(Exam exam) {
-        this.exam = exam;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 }
