@@ -22,7 +22,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    null as content,\n" +
+                "    article.content,\n" +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +
@@ -107,7 +107,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    null as content,\n" +
+                "    article.content,\n" +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +
@@ -144,11 +144,15 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType) {
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content) {
+        String sqlContent = "    null as content,\n";
+        if (content == 1) {
+            sqlContent = "    article.content,\n";
+        }
         StringBuilder sql = new StringBuilder("SELECT\n" +
                 "    article.id,\n" +
                 "    article.title,\n" +
-                "    null as content,\n" +
+                sqlContent +
                 "    article.history_day,\n" +
                 "    article.status,\n" +
                 "    article.post_type,\n" +

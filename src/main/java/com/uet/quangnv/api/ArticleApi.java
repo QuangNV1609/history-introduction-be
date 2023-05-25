@@ -50,9 +50,10 @@ public class ArticleApi {
             @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
             @RequestParam(value = "historyDay", required = false) String historyDay,
             @RequestParam(value = "status", required = false) Integer status,
-            @RequestParam(value = "postType", required = false) Integer postType) {
+            @RequestParam(value = "postType", required = false) Integer postType,
+            @RequestParam(value = "content", required = false) Integer content) {
         log.info("Request to get all article by censorship: ");
-        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType);
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType, content);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 

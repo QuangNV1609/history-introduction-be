@@ -27,4 +27,6 @@ public interface UserService extends UserDetailsService {
     Object[] getAdmin2();
 
     UserDto getUserInfo();
+
+    Boolean checkUserExits(String username);
 }

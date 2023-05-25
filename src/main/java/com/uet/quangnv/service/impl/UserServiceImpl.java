@@ -106,6 +106,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Boolean checkUserExits(String username) {
+        Optional<User> optional = userRepository.findById(username);
+        if (optional.isPresent()) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
     public void deleteMultiAccount(List<String> username) {
         userRepository.deleteAllById(username);
     }

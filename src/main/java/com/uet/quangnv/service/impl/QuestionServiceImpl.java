@@ -37,7 +37,7 @@ public class QuestionServiceImpl implements QuestionService {
                     Question question = new Question();
                     question.setContent(questionDto.getContent());
                     question.setArticleId(questionDto.getArticleId());
-                    if (currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
+                    if (currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
                         question.setStatus(1);
                     }
                     question = questionRepository.save(question);
@@ -76,7 +76,7 @@ public class QuestionServiceImpl implements QuestionService {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         String username = null;
         Boolean isAdmin = false;
-        if (currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
+        if (currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
             username = currentUserLogin.getUsername();
             isAdmin = true;
         }
