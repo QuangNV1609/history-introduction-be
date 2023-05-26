@@ -28,6 +28,9 @@ public class UserScore {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeExamEnd;
 
+    @Column(name = "timeExam")
+    private Long timeExam;
+
     public Long getId() {
         return id;
     }
