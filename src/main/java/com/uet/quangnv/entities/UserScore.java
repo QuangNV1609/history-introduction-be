@@ -17,7 +17,7 @@ public class UserScore {
     private Double score;
     @Column(name = "numOfQuestion")
     private Integer numOfQuestion;
-    @Column(name = "c")
+    @Column(name = "historicalPeriod")
     private Integer historicalPeriod;
 
     @Column(name = "timeExamStart")
