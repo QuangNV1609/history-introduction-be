@@ -3,11 +3,12 @@ package com.uet.quangnv.entities;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "userScore")
 @EntityListeners(AuditingEntityListener.class)
-public class UserScore extends BaseEntity {
+public class UserScore {
     @Id
     private Long id;
     @Column(name = "username")
@@ -18,6 +19,9 @@ public class UserScore extends BaseEntity {
     private Integer numOfQuestion;
     @Column(name = "historicalPeriod")
     private Integer historicalPeriod;
+
+    @Column(name = "timeExam")
+    private Date timeExam;
 
     public Long getId() {
         return id;
