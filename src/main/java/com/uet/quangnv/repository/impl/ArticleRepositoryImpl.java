@@ -146,7 +146,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     @Override
     public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content) {
         String sqlContent = "    null as content,\n";
-        if (content == 1) {
+        if (content != null && content == 1) {
             sqlContent = "    article.content,\n";
         }
         StringBuilder sql = new StringBuilder("SELECT\n" +

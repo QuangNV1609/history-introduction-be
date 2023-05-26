@@ -54,9 +54,8 @@ public class UserApi {
         return new ResponseEntity<>(userDto, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/check-user-exits")
-    @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Boolean> checkUserExist(@RequestBody String username) {
+    @GetMapping(value = "/check-user-exits")
+    public ResponseEntity<Boolean> checkUserExist(@RequestParam String username) {
         log.info("Request to get check user exits! ");
         return new ResponseEntity<>(userService.checkUserExits(username), HttpStatus.OK);
     }
