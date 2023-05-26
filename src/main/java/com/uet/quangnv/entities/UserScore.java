@@ -17,11 +17,16 @@ public class UserScore {
     private Double score;
     @Column(name = "numOfQuestion")
     private Integer numOfQuestion;
-    @Column(name = "historicalPeriod")
+    @Column(name = "c")
     private Integer historicalPeriod;
 
-    @Column(name = "timeExam")
-    private Date timeExam;
+    @Column(name = "timeExamStart")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeExamStart;
+
+    @Column(name = "timeExamEnd")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeExamEnd;
 
     public Long getId() {
         return id;
@@ -61,5 +66,21 @@ public class UserScore {
 
     public void setHistoricalPeriod(Integer historicalPeriod) {
         this.historicalPeriod = historicalPeriod;
+    }
+
+    public Date getTimeExamStart() {
+        return timeExamStart;
+    }
+
+    public void setTimeExamStart(Date timeExamStart) {
+        this.timeExamStart = timeExamStart;
+    }
+
+    public Date getTimeExamEnd() {
+        return timeExamEnd;
+    }
+
+    public void setTimeExamEnd(Date timeExamEnd) {
+        this.timeExamEnd = timeExamEnd;
     }
 }
