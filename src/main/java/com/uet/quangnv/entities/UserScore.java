@@ -86,4 +86,12 @@ public class UserScore {
     public void setTimeExamEnd(Date timeExamEnd) {
         this.timeExamEnd = timeExamEnd;
     }
+
+    public Long getTimeExam() {
+        return timeExam;
+    }
+
+    public void setTimeExam(Long timeExam) {
+        this.timeExam = timeExam;
+    }
 }
