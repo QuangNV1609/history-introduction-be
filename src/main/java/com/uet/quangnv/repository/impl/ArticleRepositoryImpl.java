@@ -73,8 +73,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "    article.cover_image,\n" +
                 "    user.username,\n" +
                 "    user_info.last_name + user_info.first_name AS author,\n" +
-                "    user_info.last_name,\n" +
                 "    user_info.first_name,\n" +
+                "    user_info.last_name,\n" +
                 "    article.create_at,\n" +
                 "    article.last_modified_date,\n" +
                 "    article_user_view.quantity as quantity\n" +
@@ -146,7 +146,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content) {
+    public List<ArticleDto> searchArticle(Boolean isAdmin, Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content, String username) {
         String sqlContent = "    null as content,\n";
         if (content != null && content == 1) {
             sqlContent = "    article.content,\n";
@@ -199,6 +199,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
         if (postType != null) {
             sql.append("and article.post_type = :postType \n");
             params.put("postType", postType);
+        }
+        if (username != null) {
+            sql.append("and article.create_by = :username \n");
+            params.put("username", username);
         }
         Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY last_modified_date DESC", "ArticleDto");
         Utils.setParamQuery(query, params);

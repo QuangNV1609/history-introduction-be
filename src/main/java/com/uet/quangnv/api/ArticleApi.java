@@ -53,7 +53,20 @@ public class ArticleApi {
             @RequestParam(value = "postType", required = false) Integer postType,
             @RequestParam(value = "content", required = false) Integer content) {
         log.info("Request to get all article by censorship: ");
-        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType, content);
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType, content, false);
+        return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/search-article-by-username")
+    @PreAuthorize("hasRole('ROLE_ADMIN_2') or hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<ArticleDto>> searchArticleToAddQuestion(
+            @RequestParam(value = "historicalPeriod", required = false) Integer historicalPeriod,
+            @RequestParam(value = "historyDay", required = false) String historyDay,
+            @RequestParam(value = "status", required = false) Integer status,
+            @RequestParam(value = "postType", required = false) Integer postType,
+            @RequestParam(value = "content", required = false) Integer content) {
+        log.info("Request to get all article by censorship: ");
+        List<ArticleDto> articleDtoList = articleService.searchArticle(historicalPeriod, historyDay, status, postType, content, true);
         return new ResponseEntity<>(articleDtoList, HttpStatus.OK);
     }
 

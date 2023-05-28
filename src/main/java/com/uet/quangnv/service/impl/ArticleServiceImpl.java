@@ -115,7 +115,6 @@ public class ArticleServiceImpl implements ArticleService {
                         articleUserRepository.save(articleUser);
                     }
                 }
-
             }
             return articleDto;
         } else {
@@ -170,16 +169,16 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDto> findArticleIsCensorship(Boolean isCensorship) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         String username = null;
-        if (!currentUserLogin.getRoleName().equals("ROLE_ADMIN")) {
+        if (!currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
             username = currentUserLogin.getUsername();
         }
         return articleRepository.getByArticleIsCensorship(isCensorship, username);
     }
 
     @Override
-    public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content) {
+    public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content, Boolean isUsername) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
-        boolean isAdmin = currentUserLogin.getRoleName().equals("ROLE_ADMIN");
-        return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay, status, postType, content);
+        boolean isAdmin = currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN");
+        return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay, status, postType, content, (!isAdmin && isUsername) ? currentUserLogin.getUsername() : null);
     }
 }

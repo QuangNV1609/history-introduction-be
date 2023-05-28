@@ -22,5 +22,5 @@ public interface ArticleService {
     void deleteArticleByIDs(List<Long> articleIds);
 
     List<ArticleDto> findArticleIsCensorship(Boolean isCensorship);
-    List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content);
+    List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content, Boolean isUsername);
 }

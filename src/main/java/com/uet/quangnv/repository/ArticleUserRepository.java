@@ -28,4 +28,8 @@ public interface ArticleUserRepository extends JpaRepository<ArticleUser, Long>,
     @Query(value = "UPDATE article_user SET last_date_view = ? WHERE username = ? and article_id = ?", nativeQuery = true)
     @Modifying
     void updateLastDateView(Date lastDateView, String username, Long articleId);
+
+    @Query(value = "UPDATE article_user SET article_id = ? WHERE article_id = ?", nativeQuery = true)
+    @Modifying
+    void updateViewForArticle(Long articleIdNew, Long articleIdOld);
 }
