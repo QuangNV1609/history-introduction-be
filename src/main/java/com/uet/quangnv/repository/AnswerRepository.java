@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
+    @Query(value = "SELECT * from answer where question_id = ?", nativeQuery = true)
+    List<Answer> findByQuestionId(Long questionId);
     @Query(value = "DELETE from answer where id in ?", nativeQuery = true)
     @Modifying
     void deleteAllByListIds(List<Long> ids);

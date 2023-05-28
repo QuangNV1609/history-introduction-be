@@ -71,8 +71,10 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "    article.historical_period,\n" +
                 "    article.thumbnail_image,\n" +
                 "    article.cover_image,\n" +
-                "    USER.username,\n" +
+                "    user.username,\n" +
                 "    user_info.last_name + user_info.first_name AS author,\n" +
+                "    user_info.last_name,\n" +
+                "    user_info.first_name,\n" +
                 "    article.create_at,\n" +
                 "    article.last_modified_date,\n" +
                 "    article_user_view.quantity as quantity\n" +
@@ -97,7 +99,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             sql.append("AND (article.status = 1 or user.username = :username)");
             params.put("username", username);
         }
-        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDtoDetails");
         Utils.setParamQuery(query, params);
         return (ArticleDto) query.getSingleResult();
     }

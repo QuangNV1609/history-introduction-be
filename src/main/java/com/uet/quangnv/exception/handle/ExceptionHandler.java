@@ -47,11 +47,21 @@ public class ExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @org.springframework.web.bind.annotation.ExceptionHandler(value = RuntimeException.class)
-    public ResponseEntity<ExceptionMessage> handlerDataFormatWrongException(
+    public ResponseEntity<ExceptionMessage> handlerRuntimeException(
             final RuntimeException runtimeException, final HttpServletRequest request,
             final HttpServletResponse response) {
 
-        ExceptionMessage errorMessage = new ExceptionMessage(runtimeException.getMessage(), 400);
+        ExceptionMessage errorMessage = new ExceptionMessage(runtimeException.getMessage(), 500);
+
+        return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.BAD_REQUEST);
+    }
+
+    @org.springframework.web.bind.annotation.ExceptionHandler(value = DataFormatWrong.class)
+    public ResponseEntity<ExceptionMessage> handlerDataFormatWrongException(
+            final DataFormatWrong dataFormatWrong, final HttpServletRequest request,
+            final HttpServletResponse response) {
+
+        ExceptionMessage errorMessage = new ExceptionMessage(dataFormatWrong.getMessage(), 500);
 
         return new ResponseEntity<ExceptionMessage>(errorMessage, HttpStatus.BAD_REQUEST);
     }

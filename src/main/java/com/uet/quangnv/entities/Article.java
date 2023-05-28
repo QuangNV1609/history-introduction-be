@@ -31,6 +31,32 @@ import java.util.Date;
                                         @ColumnResult(name = "quantity", type = Long.class)
                                 })
                 }
+        ),
+        @SqlResultSetMapping(
+                name = "ArticleDtoDetails",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = ArticleDto.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Long.class),
+                                        @ColumnResult(name = "title", type = String.class),
+                                        @ColumnResult(name = "content", type = String.class),
+                                        @ColumnResult(name = "history_day", type = Date.class),
+                                        @ColumnResult(name = "status", type = Integer.class),
+                                        @ColumnResult(name = "post_type", type = Integer.class),
+                                        @ColumnResult(name = "historical_period", type = Integer.class),
+                                        @ColumnResult(name = "thumbnail_image", type = Long.class),
+                                        @ColumnResult(name = "cover_image", type = Long.class),
+                                        @ColumnResult(name = "username", type = String.class),
+                                        @ColumnResult(name = "author", type = String.class),
+                                        @ColumnResult(name = "first_name", type = String.class),
+                                        @ColumnResult(name = "last_name", type = String.class),
+                                        @ColumnResult(name = "author", type = String.class),
+                                        @ColumnResult(name = "create_at", type = Date.class),
+                                        @ColumnResult(name = "last_modified_date", type = Date.class),
+                                        @ColumnResult(name = "quantity", type = Long.class)
+                                })
+                }
         )}
 )
 public class Article extends BaseEntity {

@@ -2,6 +2,7 @@ package com.uet.quangnv.api;
 
 import com.uet.quangnv.dto.QuestionDto;
 import com.uet.quangnv.exception.domain.DataFormatWrong;
+import com.uet.quangnv.exception.domain.ResoureNotFoundException;
 import com.uet.quangnv.service.QuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,13 @@ public class QuestionApi {
 
     @PostMapping(value = "/save-question")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
-    public ResponseEntity<QuestionDto> saveListQuestion(@RequestBody QuestionDto questionDto) throws DataFormatWrong {
+    public ResponseEntity<QuestionDto> saveListQuestion(@RequestBody QuestionDto questionDto) throws DataFormatWrong, ResoureNotFoundException {
         return new ResponseEntity<>(questionService.saveQuestionDto(questionDto), HttpStatus.OK);
     }
 
     @PostMapping(value = "/save-list-question")
     @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_ADMIN_2')")
-    public ResponseEntity<List<QuestionDto>> saveListQuestion(@RequestBody List<QuestionDto> questionDtos) throws DataFormatWrong {
+    public ResponseEntity<List<QuestionDto>> saveListQuestion(@RequestBody List<QuestionDto> questionDtos) throws DataFormatWrong, ResoureNotFoundException {
         return new ResponseEntity<>(questionService.saveListQuestionDto(questionDtos), HttpStatus.OK);
     }
 

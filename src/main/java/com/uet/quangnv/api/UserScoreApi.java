@@ -27,16 +27,6 @@ public class UserScoreApi {
         return new ResponseEntity<>(userScores, HttpStatus.OK);
     }
 
-//    @GetMapping(name = "/history-user-score")
-//    @PreAuthorize("isAuthenticated()")
-//    public ResponseEntity<List<UserScore>> getHistoryUserScore(
-//            @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
-//            @RequestParam(name = "numOfQuestion", required = false) Integer numOfQuestion
-//    ) {
-//        List<UserScore> userScores = userScoreService.getHistoryUserScore(historicalPeriod, numOfQuestion);
-//        return new ResponseEntity<>(userScores, HttpStatus.OK);
-//    }
-
     @PostMapping(name = "/save")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserScore> saveUserScore(@RequestBody UserScore userScore) {

@@ -1,6 +1,7 @@
 package com.uet.quangnv.dto;
 
-import javax.persistence.Column;
+import com.uet.quangnv.entities.Answer;
+
 import java.util.List;
 
 public class QuestionDto {
@@ -9,13 +10,13 @@ public class QuestionDto {
     private Long articleId;
     private Integer status;
 
-    private Long articleTitle;
-    private List<AnswerDto> answerDtos;
+    private String articleTitle;
+    private List<AnswerDto> answers;
 
     public QuestionDto() {
     }
 
-    public QuestionDto(Long id, String content, Integer status, Long articleId, Long articleTitle) {
+    public QuestionDto(Long id, String content, Integer status, Long articleId, String articleTitle) {
         this.id = id;
         this.content = content;
         this.articleId = articleId;
@@ -47,14 +48,6 @@ public class QuestionDto {
         this.articleId = articleId;
     }
 
-    public List<AnswerDto> getAnswerDtos() {
-        return answerDtos;
-    }
-
-    public void setAnswerDtos(List<AnswerDto> answerDtos) {
-        this.answerDtos = answerDtos;
-    }
-
     public Integer getStatus() {
         return status;
     }
@@ -63,11 +56,19 @@ public class QuestionDto {
         this.status = status;
     }
 
-    public Long getArticleTitle() {
+    public String getArticleTitle() {
         return articleTitle;
     }
 
-    public void setArticleTitle(Long articleTitle) {
+    public void setArticleTitle(String articleTitle) {
         this.articleTitle = articleTitle;
+    }
+
+    public List<AnswerDto> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<AnswerDto> answers) {
+        this.answers = answers;
     }
 }

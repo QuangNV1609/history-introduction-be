@@ -20,7 +20,7 @@ import java.util.Date;
                                         @ColumnResult(name = "id", type = Long.class),
                                         @ColumnResult(name = "content", type = String.class),
                                         @ColumnResult(name = "status", type = Integer.class),
-                                        @ColumnResult(name = "article_id", type = Date.class),
+                                        @ColumnResult(name = "article_id", type = Long.class),
                                         @ColumnResult(name = "title", type = String.class)
                                 })
                 }

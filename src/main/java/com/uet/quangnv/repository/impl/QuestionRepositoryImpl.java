@@ -47,6 +47,6 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
         }
         Query query = entityManager.createNativeQuery(sqlSearch.toString(), "QuestionDto");
         Utils.setParamQuery(query, params);
-        return null;
+        return query.getResultList();
     }
 }

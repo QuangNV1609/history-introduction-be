@@ -23,6 +23,8 @@ public class ArticleDto {
     private Long parentID;
     private String author;
     private String username;
+    private String firstName;
+    private String lastName;
     private Integer historicalPeriod;
     private Date createAt;
     private Date lastModifiedDate;
@@ -57,6 +59,40 @@ public class ArticleDto {
         this.status = status;
         this.username = username;
         this.author = author;
+        this.createAt = Utils.beforeSendDateToClient(createAt);
+        this.lastModifiedDate = Utils.beforeSendDateToClient(lastModifiedDate);
+        this.quantity = quantity;
+    }
+
+    public ArticleDto(Long id,
+                      String title,
+                      String content,
+                      Date historyDay,
+                      Integer status,
+                      Integer postType,
+                      Integer historicalPeriod,
+                      Long thumbnailImage,
+                      Long coverImage,
+                      String username,
+                      String author,
+                      String firstName,
+                      String lastName,
+                      Date createAt,
+                      Date lastModifiedDate,
+                      Long quantity) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+        this.coverImage = coverImage;
+        this.thumbnailImage = thumbnailImage;
+        this.historyDay = Utils.beforeSendDateToClient(historyDay);
+        this.postType = postType;
+        this.historicalPeriod = historicalPeriod;
+        this.status = status;
+        this.username = username;
+        this.author = author;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.createAt = Utils.beforeSendDateToClient(createAt);
         this.lastModifiedDate = Utils.beforeSendDateToClient(lastModifiedDate);
         this.quantity = quantity;
@@ -196,5 +232,21 @@ public class ArticleDto {
 
     public void setQuantity(Long quantity) {
         this.quantity = quantity;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }
