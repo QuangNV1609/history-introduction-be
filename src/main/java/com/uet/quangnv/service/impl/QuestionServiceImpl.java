@@ -93,7 +93,6 @@ public class QuestionServiceImpl implements QuestionService {
         }
         List<QuestionDto> questionDtos = questionRepository.searchQuestions(historicalPeriod, status, size, isAdmin, username);
         questionDtos.forEach(item -> {
-
             item.setAnswers(convertListAnswerToDto(answerRepository.findByQuestionId(item.getId())));
         });
         return questionDtos;
