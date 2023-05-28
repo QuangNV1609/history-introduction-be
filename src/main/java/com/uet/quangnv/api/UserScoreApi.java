@@ -20,13 +20,22 @@ public class UserScoreApi {
     private UserScoreService userScoreService;
 
     @GetMapping(name = "/top-user-score")
-    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserScore>> getTopUserScore(
-            @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
-            @RequestParam(name = "numOfQuestion", required = false) Integer numOfQuestion) {
+            @RequestParam("historicalPeriod") Integer historicalPeriod,
+            @RequestParam("numOfQuestion") Integer numOfQuestion) {
         List<UserScore> userScores = userScoreService.getTopUserScore(historicalPeriod, numOfQuestion);
         return new ResponseEntity<>(userScores, HttpStatus.OK);
     }
+
+//    @GetMapping(name = "/history-user-score")
+//    @PreAuthorize("isAuthenticated()")
+//    public ResponseEntity<List<UserScore>> getHistoryUserScore(
+//            @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
+//            @RequestParam(name = "numOfQuestion", required = false) Integer numOfQuestion
+//    ) {
+//        List<UserScore> userScores = userScoreService.getHistoryUserScore(historicalPeriod, numOfQuestion);
+//        return new ResponseEntity<>(userScores, HttpStatus.OK);
+//    }
 
     @PostMapping(name = "/save")
     @PreAuthorize("isAuthenticated()")

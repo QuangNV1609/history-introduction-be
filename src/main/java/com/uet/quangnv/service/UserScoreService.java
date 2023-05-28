@@ -8,4 +8,5 @@ public interface UserScoreService {
     UserScore save(UserScore userScore);
 
     List<UserScore> getTopUserScore(Integer historicalPeriod, Integer numOfQuestion);
+    List<UserScore> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion);
 }

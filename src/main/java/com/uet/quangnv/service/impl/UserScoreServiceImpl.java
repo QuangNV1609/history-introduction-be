@@ -31,4 +31,10 @@ public class UserScoreServiceImpl implements UserScoreService {
         List<UserScore> userScores = userScoreRepository.getTopUserScore(historicalPeriod, numOfQuestion);
         return userScores;
     }
+
+    @Override
+    public List<UserScore> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion) {
+        UserDto userDto = Utils.getCurrentUserLogin();
+        return userScoreRepository.getHistoryUserScore(historicalPeriod, numOfQuestion, userDto.getUsername());
+    }
 }
