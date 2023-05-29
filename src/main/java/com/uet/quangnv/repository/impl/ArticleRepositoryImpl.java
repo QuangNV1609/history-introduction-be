@@ -54,7 +54,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
             params.put("username", username);
         }
         sql.append("ORDER BY article.create_by DESC");
-        Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY create_at DESC", "ArticleDto");
+        Query query = entityManager.createNativeQuery(sql.toString(), "ArticleDto");
         Utils.setParamQuery(query, params);
         return query.getResultList();
     }
@@ -137,11 +137,17 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 "    article.id = article_user_view.article_id\n" +
                 "WHERE \n");
         if (isCensorship) {
-            sql.append("article.status = 1");
+            sql.append("article.status = 1\n");
         } else {
-            sql.append("article.status = 0");
+            sql.append("article.status = 0\n");
+        }
+        Map<String, Object> params = new HashMap<>();
+        if (username != null) {
+            sql.append("And article.create_by = :username\n");
+            params.put("username", username);
         }
         Query query = entityManager.createNativeQuery(sql.toString() + " ORDER BY last_modified_date DESC", "ArticleDto");
+        Utils.setParamQuery(query, params);
         return query.getResultList();
     }
 

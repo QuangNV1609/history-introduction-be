@@ -1,5 +1,6 @@
 package com.uet.quangnv.entities;
 
+import com.uet.quangnv.dto.UserScoreDto;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
@@ -8,8 +9,28 @@ import java.util.Date;
 @Entity
 @Table(name = "userScore")
 @EntityListeners(AuditingEntityListener.class)
+@SqlResultSetMappings({
+        @SqlResultSetMapping(
+                name = "UserScoreDto",
+                classes = {
+                        @ConstructorResult(
+                                targetClass = UserScoreDto.class,
+                                columns = {
+                                        @ColumnResult(name = "id", type = Long.class),
+                                        @ColumnResult(name = "username", type = String.class),
+                                        @ColumnResult(name = "score", type = Double.class),
+                                        @ColumnResult(name = "num_of_question", type = Integer.class),
+                                        @ColumnResult(name = "historical_period", type = Integer.class),
+                                        @ColumnResult(name = "time_exam_start", type = Date.class),
+                                        @ColumnResult(name = "time_exam_end", type = Date.class),
+                                        @ColumnResult(name = "time_exam", type = Long.class),
+                                })
+                }
+        )}
+)
 public class UserScore {
     @Id
+    @GeneratedValue
     private Long id;
     @Column(name = "username")
     private String username;

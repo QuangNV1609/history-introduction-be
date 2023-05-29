@@ -1,6 +1,7 @@
 package com.uet.quangnv.service.impl;
 
 import com.uet.quangnv.dto.UserDto;
+import com.uet.quangnv.dto.UserScoreDto;
 import com.uet.quangnv.entities.UserScore;
 import com.uet.quangnv.repository.UserScoreRepository;
 import com.uet.quangnv.service.UserScoreService;
@@ -33,7 +34,7 @@ public class UserScoreServiceImpl implements UserScoreService {
     }
 
     @Override
-    public List<UserScore> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion) {
+    public List<UserScoreDto> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion) {
         UserDto userDto = Utils.getCurrentUserLogin();
         return userScoreRepository.getHistoryUserScore(historicalPeriod, numOfQuestion, userDto.getUsername());
     }

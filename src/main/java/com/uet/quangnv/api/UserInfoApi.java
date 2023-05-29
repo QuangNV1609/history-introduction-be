@@ -1,5 +1,6 @@
 package com.uet.quangnv.api;
 
+import com.uet.quangnv.dto.UserScoreDto;
 import com.uet.quangnv.entities.UserInfo;
 import com.uet.quangnv.entities.UserScore;
 import com.uet.quangnv.service.UserInfoService;
@@ -34,11 +35,11 @@ public class UserInfoApi {
 
     @GetMapping(value = "/history-user-score")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<List<UserScore>> getHistoryUserScore(
+    public ResponseEntity<List<UserScoreDto>> getHistoryUserScore(
             @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
             @RequestParam(name = "numOfQuestion", required = false) Integer numOfQuestion
     ) {
-        List<UserScore> userScores = userScoreService.getHistoryUserScore(historicalPeriod, numOfQuestion);
+        List<UserScoreDto> userScores = userScoreService.getHistoryUserScore(historicalPeriod, numOfQuestion);
         return new ResponseEntity<>(userScores, HttpStatus.OK);
     }
 }

@@ -66,7 +66,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void blockAccount(String username) {
-        userRepository.blockAccountByUsername(username);
+        Optional<User> optional = userRepository.findById(username);
+        if (!optional.isPresent()) {
+            throw new UsernameNotFoundException(username + " not found!");
+        } else if (!optional.get().getActive()) {
+            userRepository.openAccountByUsername(username);
+        } else {
+            userRepository.blockAccountByUsername(username);
+        }
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.uet.quangnv.service;
 
+import com.uet.quangnv.dto.UserScoreDto;
 import com.uet.quangnv.entities.UserScore;
 
 import java.util.List;
@@ -8,5 +9,5 @@ public interface UserScoreService {
     UserScore save(UserScore userScore);
 
     List<UserScore> getTopUserScore(Integer historicalPeriod, Integer numOfQuestion);
-    List<UserScore> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion);
+    List<UserScoreDto> getHistoryUserScore(Integer historicalPeriod, Integer numOfQuestion);
 }
