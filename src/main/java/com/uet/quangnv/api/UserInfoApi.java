@@ -42,4 +42,12 @@ public class UserInfoApi {
         List<UserScoreDto> userScores = userScoreService.getHistoryUserScore(historicalPeriod, numOfQuestion);
         return new ResponseEntity<>(userScores, HttpStatus.OK);
     }
+
+    @GetMapping(value = "/top-user-score")
+    public ResponseEntity<List<UserScore>> getTopUserScore(
+            @RequestParam("historicalPeriod") Integer historicalPeriod,
+            @RequestParam("numOfQuestion") Integer numOfQuestion) {
+        List<UserScore> userScores = userScoreService.getTopUserScore(historicalPeriod, numOfQuestion);
+        return new ResponseEntity<>(userScores, HttpStatus.OK);
+    }
 }

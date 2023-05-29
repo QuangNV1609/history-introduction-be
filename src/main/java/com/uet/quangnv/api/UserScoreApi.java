@@ -19,14 +19,6 @@ public class UserScoreApi {
     @Autowired
     private UserScoreService userScoreService;
 
-    @GetMapping(value = "/top-user-score")
-    public ResponseEntity<List<UserScore>> getTopUserScore(
-            @RequestParam("historicalPeriod") Integer historicalPeriod,
-            @RequestParam("numOfQuestion") Integer numOfQuestion) {
-        List<UserScore> userScores = userScoreService.getTopUserScore(historicalPeriod, numOfQuestion);
-        return new ResponseEntity<>(userScores, HttpStatus.OK);
-    }
-
     @PostMapping(value = "/save")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserScore> saveUserScore(@RequestBody UserScore userScore) {
