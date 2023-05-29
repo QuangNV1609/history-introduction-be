@@ -33,10 +33,10 @@ public class QuestionRepositoryImpl implements QuestionRepositoryCustom {
             params.put("historicalPeriod", historicalPeriod);
         }
         if (status != null) {
-            sqlSearch.append("AND article.status = :status\n");
+            sqlSearch.append("AND question.status = :status\n");
             params.put("status", status);
         } else if (!isAdmin && username == null) {
-            sqlSearch.append("AND article.status = 1\n");
+            sqlSearch.append("AND question.status = 1\n");
         }
         if (username != null) {
             sqlSearch.append("AND article.create_by = :createBy\n");

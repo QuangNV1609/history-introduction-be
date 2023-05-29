@@ -3,9 +3,11 @@ package com.uet.quangnv.service.impl;
 import com.uet.quangnv.dto.UserDto;
 import com.uet.quangnv.entities.Role;
 import com.uet.quangnv.entities.User;
+import com.uet.quangnv.entities.UserInfo;
 import com.uet.quangnv.exception.domain.DataFormatWrong;
 import com.uet.quangnv.exception.domain.DuplicateIDException;
 import com.uet.quangnv.repository.RoleRepository;
+import com.uet.quangnv.repository.UserInfoRepository;
 import com.uet.quangnv.repository.UserRepository;
 import com.uet.quangnv.service.UserService;
 import com.uet.quangnv.ultis.Utils;
@@ -30,6 +32,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private RoleRepository roleRepository;
+
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -78,6 +83,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteAccount(String username) {
+        userInfoRepository.deleteByUsername(username);
         userRepository.deleteById(username);
     }
 
@@ -123,6 +129,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteMultiAccount(List<String> username) {
+        userInfoRepository.deleteByUsername(username);
         userRepository.deleteAllById(username);
     }
 

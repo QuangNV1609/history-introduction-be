@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long>, QuestionRepositoryCustom {
-    @Query(value = "update from question set status = 1 where id in ?", nativeQuery = true)
+    @Query(value = "update question set status = 1 where id in ?", nativeQuery = true)
     @Modifying
     void censorshipListQuestion(List<Long> questionIds);
 

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -13,6 +14,14 @@ public interface UserInfoRepository extends JpaRepository<UserInfo, Long> {
     @Modifying
     @Query(value = "Update user_info Set imageid = ?1 where id = ?2", nativeQuery = true)
     void updateImageID(Long imageId, Long userInfoId);
+
+    @Modifying
+    @Query(value = "DELETE FROM user_info WHERE user_id in ?", nativeQuery = true)
+    void deleteByUsername(List<String> listUsername);
+
+    @Modifying
+    @Query(value = "DELETE FROM user_info WHERE user_id = ?", nativeQuery = true)
+    void deleteByUsername(String listUsername);
 
     @Modifying
     @Query(value = "Update user_info Set first_name = ?1, last_name = ?2 where id = ?3", nativeQuery = true)

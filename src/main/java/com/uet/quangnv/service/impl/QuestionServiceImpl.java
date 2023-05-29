@@ -46,6 +46,8 @@ public class QuestionServiceImpl implements QuestionService {
                 question.setArticleId(questionDto.getArticleId());
                 if (currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
                     question.setStatus(1);
+                } else {
+                    question.setStatus(0);
                 }
                 Optional<Article> optional = articleRepository.findById(question.getArticleId());
                 if (!optional.isPresent()) {

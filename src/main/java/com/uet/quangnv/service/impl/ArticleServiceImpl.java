@@ -88,7 +88,7 @@ public class ArticleServiceImpl implements ArticleService {
     public ArticleDto findArticleByID(Long articleID) throws ResoureNotFoundException {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         ArticleDto articleDto;
-        if (currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
+        if (currentUserLogin.getRoleName().size() > 0 && currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
             articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), true);
         } else {
             articleDto = articleRepository.getByArticleID(articleID, currentUserLogin.getUsername(), false);
@@ -126,7 +126,7 @@ public class ArticleServiceImpl implements ArticleService {
     public List<ArticleDto> findAllArticleByUsername() {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
         List<ArticleDto> articleDtoList;
-        if (currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
+        if (currentUserLogin.getRoleName().size() > 0 && currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN")) {
             articleDtoList = articleRepository.getAllByUserLogin(currentUserLogin.getUsername(), true);
         } else {
             articleDtoList = articleRepository.getAllByUserLogin(currentUserLogin.getUsername(), false);
@@ -178,7 +178,10 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public List<ArticleDto> searchArticle(Integer historicalPeriod, String historyDay, Integer status, Integer postType, Integer content, Boolean isUsername) {
         UserDto currentUserLogin = Utils.getCurrentUserLogin();
-        boolean isAdmin = currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN");
+        boolean isAdmin = false;
+        if (currentUserLogin.getRoleName().size() > 0) {
+            isAdmin = currentUserLogin.getRoleName().get(0).equals("ROLE_ADMIN");
+        }
         return articleRepository.searchArticle(isAdmin, historicalPeriod, historyDay, status, postType, content, (!isAdmin && isUsername) ? currentUserLogin.getUsername() : null);
     }
 }
