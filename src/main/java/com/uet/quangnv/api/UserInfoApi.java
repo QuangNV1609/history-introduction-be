@@ -32,7 +32,7 @@ public class UserInfoApi {
         return new ResponseEntity<>(userInfo, HttpStatus.OK);
     }
 
-    @GetMapping(name = "/history-user-score")
+    @GetMapping(value = "/history-user-score")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<UserScore>> getHistoryUserScore(
             @RequestParam(name = "historicalPeriod", required = false) Integer historicalPeriod,
